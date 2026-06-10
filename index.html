@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>SNS投稿ノート</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="投稿ノート">
+<meta name="theme-color" content="#1a1a1a">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,'Hiragino Sans',sans-serif;background:#f5f3ef;color:#1a1a1a;min-height:100vh}
+header{background:#1a1a1a;color:#fff;padding:18px 16px 10px}
+header h1{font-size:17px;font-weight:700}
+header p{font-size:11px;color:#888;margin-top:2px}
+#storage-status{font-size:12px;font-weight:700;margin-top:6px;padding:5px 10px;border-radius:8px;display:inline-block}
+#storage-status.ok{background:#1e3a1e;color:#6fcf6f}
+#storage-status.warn{background:#3a2000;color:#ffb74d}
+.nav{display:flex;background:#fff;border-top:1px solid #e8e4df;position:fixed;bottom:0;left:0;right:0;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:transparent;font-size:10px;font-family:inherit;color:#aaa;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s}
+.nav-btn .ni{font-size:20px;line-height:1}
+.nav-btn.active{color:#1a1a1a;font-weight:700}
+.screen{display:none;padding:16px 14px 90px;max-width:600px;margin:0 auto}
+.screen.active{display:block}
+.card{background:#fff;border-radius:14px;padding:18px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.ct{font-size:11px;font-weight:700;color:#999;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px;color:#333}
+.field label .req{color:#e05c5c;margin-left:2px}
+.field input,.field textarea{width:100%;border:1.5px solid #e5e1dc;border-radius:10px;padding:10px 12px;font-size:15px;font-family:inherit;background:#fafaf8;color:#1a1a1a;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.field input:focus,.field textarea:focus{border-color:#1a1a1a;background:#fff}
+.field textarea{resize:vertical;min-height:72px;line-height:1.6}
+.field .hint{font-size:11px;color:#bbb;margin-top:4px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.chip{padding:6px 13px;border-radius:99px;border:1.5px solid #e5e1dc;background:#fafaf8;font-size:13px;font-family:inherit;color:#555;cursor:pointer;transition:all .15s;-webkit-appearance:none}
+.chip.on{background:#1a1a1a;border-color:#1a1a1a;color:#fff}
+.btn{width:100%;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .15s;margin-bottom:12px}
+.btn:active{opacity:.7}
+.btn-dark{background:#1a1a1a;color:#fff}
+.btn-hotel{background:#2c4a6e;color:#fff}
+.btn-outline{background:#fff;color:#1a1a1a;border:1.5px solid #1a1a1a}
+.btn-sm{padding:8px 14px;font-size:13px;font-weight:600;border-radius:8px;border:none;font-family:inherit;cursor:pointer;transition:all .15s}
+.btn-sm:active{opacity:.7}
+.btn-green{background:#e8f5e9;color:#2e7d32}
+.btn-red{background:#ffebee;color:#c62828}
+.btn-blue{background:#e3f2fd;color:#1565c0}
+.plist{display:flex;flex-direction:column;gap:10px}
+.pitem{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pitem .pname{font-size:15px;font-weight:700;margin-bottom:3px}
+.pitem .pmeta{font-size:12px;color:#888;margin-bottom:8px}
+.pitem .ppoint{font-size:13px;color:#444;margin-bottom:10px;line-height:1.5}
+.pitem .pactions{display:flex;gap:8px;flex-wrap:wrap}
+.pitem .purl{font-size:12px;color:#1565c0;text-decoration:none;display:block;margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cbadge{display:inline-block;background:#f0ece7;color:#666;font-size:11px;padding:2px 8px;border-radius:99px;margin-right:6px}
+.empty{text-align:center;padding:48px 16px;color:#bbb}
+.empty .eicon{font-size:40px;margin-bottom:12px}
+.empty p{font-size:14px}
+.sbar{display:flex;gap:8px;margin-bottom:12px}
+.sbar input{flex:1;border:1.5px solid #e5e1dc;border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;background:#fafaf8;outline:none;-webkit-appearance:none}
+.sbar input:focus{border-color:#1a1a1a;background:#fff}
+.frow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.fchip{padding:5px 12px;border-radius:99px;border:1.5px solid #e5e1dc;background:#fff;font-size:12px;font-family:inherit;color:#666;cursor:pointer;transition:all .15s;-webkit-appearance:none}
+.fchip.on{background:#1a1a1a;border-color:#1a1a1a;color:#fff}
+.rblock{display:none}
+.rcard{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.prow{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.picon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.plabel{font-size:14px;font-weight:700}
+.pcount{font-size:11px;color:#bbb;margin-left:auto}
+.cbox{font-size:14px;line-height:1.8;color:#222;white-space:pre-wrap;word-break:break-all;background:#f5f3ef;border-radius:9px;padding:12px 13px;margin-bottom:9px}
+.bcopy{width:100%;background:#f0ece7;color:#1a1a1a;border:none;border-radius:9px;padding:10px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s}
+.bcopy:active{background:#e5e0da}
+.bcopy.done{background:#d4edda;color:#276749}
+.icon-t{background:#1a1a1a;color:#fff}
+.icon-r{background:#bf0000;color:#fff}
+.icon-x{background:#000;color:#fff}
+.icon-i{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff}
+.icon-h{background:#2c4a6e;color:#fff}
+.stabs{display:flex;background:#f5f3ef;border-radius:10px;padding:3px;margin-bottom:16px}
+.stab{flex:1;padding:9px 6px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;color:#aaa;cursor:pointer;transition:all .15s}
+.stab.active{background:#fff;color:#1a1a1a;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.selbanner{background:#e8f5e9;border:1.5px solid #a5d6a7;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:none}
+.selbanner.show{display:flex;align-items:center;gap:10px}
+.sbname{font-size:14px;font-weight:700;color:#2e7d32;flex:1}
+.sbclear{background:none;border:none;color:#888;font-size:18px;cursor:pointer;padding:0;line-height:1}
+.steps{display:flex;align-items:center;margin-bottom:16px}
+.step{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
+.snum{width:26px;height:26px;border-radius:99px;background:#e5e1dc;color:#aaa;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.slabel{font-size:10px;color:#aaa;font-weight:600}
+.step.active .snum{background:#1a1a1a;color:#fff}
+.step.active .slabel{color:#1a1a1a}
+.step.done .snum{background:#4caf50;color:#fff}
+.sline{flex:1;height:2px;background:#e5e1dc;margin:0 6px 14px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ccard{border:2px solid #e5e1dc;border-radius:12px;padding:12px 10px;text-align:center;cursor:pointer;background:#fafaf8;transition:all .15s;-webkit-appearance:none;font-family:inherit;width:100%}
+.ccard:active{opacity:.7}
+.ccard.sel{border-color:#1a1a1a;background:#1a1a1a;color:#fff}
+.cicon{font-size:22px;display:block;margin-bottom:4px}
+.cname{font-size:13px;font-weight:700;display:block}
+.cdesc{font-size:10px;color:#aaa;display:block;margin-top:2px}
+.ccard.sel .cdesc{color:#ccc}
+.afnote{background:#fff8e1;border:1.5px solid #ffe082;border-radius:10px;padding:10px 14px;font-size:13px;color:#7a6000;margin-bottom:12px}
+.ddesc{font-size:13px;color:#666;line-height:1.7;margin-bottom:4px}
+.dcount{font-size:13px;font-weight:700;color:#1a1a1a;background:#f0ece7;border-radius:8px;padding:8px 12px;margin-top:10px}
+.idrop{border:2px dashed #c8c4be;border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;margin-top:12px;transition:all .15s;background:#fafaf8}
+.idrop:active{background:#f0ece7;border-color:#1a1a1a}
+.iicon{font-size:32px;margin-bottom:8px}
+.ilabel{font-size:14px;font-weight:700;color:#333}
+.isub{font-size:12px;color:#aaa;margin-top:4px}
+.dcard{border:1.5px solid #ffcdd2}
+.dbanner{border-radius:10px;padding:12px 14px;font-size:13px;font-weight:600;margin-bottom:12px;display:none}
+.dbanner.ok{background:#e8f5e9;color:#2e7d32;border:1.5px solid #a5d6a7}
+.dbanner.err{background:#ffebee;color:#c62828;border:1.5px solid #ef9a9a}
+/* 保存テスト */
+.test-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #f0ece7}
+.test-row:last-child{border-bottom:none}
+.test-label{font-size:13px;color:#444;flex:1}
+.test-val{font-size:13px;font-weight:700}
+.test-ok{color:#2e7d32}
+.test-ng{color:#c62828}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;z-index:999}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <h1>SNS 投稿ジェネレーター</h1>
+  <p>商品管理ノート ＋ 投稿文生成</p>
+  <span id="storage-status">読み込み中...</span>
+</header>
+
+<div class="screen active" id="screen-note">
+  <div class="sbar"><input type="search" id="note-search" placeholder="🔍 商品名・特徴で検索" oninput="renderList()"></div>
+  <div class="frow" id="filter-row"></div>
+  <div id="product-list-area"></div>
+</div>
+
+<div class="screen" id="screen-add">
+  <div class="steps">
+    <div class="step active" id="sbar-1"><span class="snum">1</span><span class="slabel">基本情報</span></div>
+    <div class="sline"></div>
+    <div class="step" id="sbar-2"><span class="snum">2</span><span class="slabel">カテゴリ</span></div>
+    <div class="sline"></div>
+    <div class="step" id="sbar-3"><span class="snum">3</span><span class="slabel">詳細確認</span></div>
+  </div>
+  <div id="reg-step1">
+    <div class="card">
+      <div class="ct">STEP 1　基本情報を入力</div>
+      <div class="field"><label>商品URL</label><input type="url" id="reg-url" placeholder="https://item.rakuten.co.jp/..." inputmode="url"><div class="hint">楽天・Amazonなどリンクを貼るだけでOK（省略可）</div></div>
+      <div class="field"><label>商品名<span class="req">*</span></label><input type="text" id="reg-name" placeholder="例: UVO 完全遮光日傘"></div>
+      <div class="field"><label>価格（円）<span class="req">*</span></label><input type="number" id="reg-price" placeholder="例: 6600" inputmode="numeric"></div>
+    </div>
+    <button class="btn btn-dark" onclick="regNext1()">次へ　カテゴリを選ぶ →</button>
+  </div>
+  <div id="reg-step2" style="display:none">
+    <div class="card">
+      <div class="ct">STEP 2　カテゴリを選ぶ</div>
+      <p class="hint" style="margin-bottom:14px">タップするだけで特徴・ポイントが自動で入ります ✨</p>
+      <div id="cat-grid"></div>
+      <div class="field" style="margin-top:14px"><label>一覧にない場合は直接入力</label><input type="text" id="reg-category-custom" placeholder="例: ペット用品・文房具など"></div>
+    </div>
+    <button class="btn btn-dark" onclick="regNext2()">次へ　詳細を確認する →</button>
+    <button class="btn btn-outline" onclick="regBack(1)" style="margin-top:0">← 戻る</button>
+  </div>
+  <div id="reg-step3" style="display:none">
+    <div class="afnote">✨ カテゴリから自動入力しました。自由に書き換えてOKです。</div>
+    <div class="card">
+      <div class="ct">STEP 3　内容を確認・編集する</div>
+      <div class="field"><label>カテゴリ</label><input type="text" id="reg-category" readonly style="background:#f5f3ef;color:#888"></div>
+      <div class="field"><label>特徴・一言メモ</label><input type="text" id="reg-feature" placeholder="例: 完全遮光100%・軽量・折りたたみ可"></div>
+      <div class="field"><label>おすすめポイント</label><textarea id="reg-point" placeholder="例: 外回りでも夕方まで全然焼けなくて感動"></textarea></div>
+      <div class="field"><label>届けたい人</label><input type="text" id="reg-target"></div>
+      <div class="field"><label>ハッシュタグ</label><input type="text" id="reg-hashtags"></div>
+    </div>
+    <button class="btn btn-dark" onclick="saveProduct()">💾 保存する</button>
+    <button class="btn btn-outline" onclick="regBack(2)" style="margin-top:0">← 戻る</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-post">
+  <div class="selbanner" id="selbanner"><span>📦</span><span class="sbname" id="selname"></span><button class="sbclear" onclick="clearSel()">×</button></div>
+  <div class="stabs">
+    <button class="stab active" onclick="switchSub('item')">🛍 商品紹介</button>
+    <button class="stab" onclick="switchSub('hotel')">🏨 ホテル紹介</button>
+  </div>
+  <div id="sub-item">
+    <div class="card">
+      <div class="ct">商品情報</div>
+      <div class="field"><label>商品名<span class="req">*</span></label><input type="text" id="name" placeholder="例: UVO 完全遮光日傘"></div>
+      <div class="field"><label>価格（円）<span class="req">*</span></label><input type="number" id="price" placeholder="例: 6600" inputmode="numeric"></div>
+      <div class="field"><label>カテゴリ</label><input type="text" id="category" placeholder="例: UV対策"></div>
+    </div>
+    <div class="card">
+      <div class="ct">体験・シーン</div>
+      <div class="field">
+        <label>場面</label>
+        <div class="chips" id="scene-chips">
+          <button class="chip" onclick="toggleChip(this)">☀️ 通勤・外回り</button>
+          <button class="chip" onclick="toggleChip(this)">🌙 朝の準備</button>
+          <button class="chip" onclick="toggleChip(this)">🎤 推し活・遠征</button>
+          <button class="chip" onclick="toggleChip(this)">✈️ 旅行</button>
+          <button class="chip" onclick="toggleChip(this)">🏠 家事・育児</button>
+          <button class="chip" onclick="toggleChip(this)">💪 運動・アウトドア</button>
+          <button class="chip" onclick="toggleChip(this)">🎁 プレゼント</button>
+        </div>
+        <input type="text" id="scene-custom" placeholder="その他シーン" style="margin-top:8px">
+      </div>
+      <div class="field"><label>使う前の悩み<span class="req">*</span></label><input type="text" id="before" placeholder="例: 日焼け止め塗っても真っ赤になってた"></div>
+      <div class="field"><label>使ってどう変わった？<span class="req">*</span></label><textarea id="after" placeholder="例: 外回り多い日でも夕方まで全然焼けなくて感動"></textarea></div>
+      <div class="field"><label>気に入ってるところ</label><input type="text" id="fav" placeholder="例: 軽くて折りたためるから荷物にならない"></div>
+    </div>
+    <div class="card">
+      <div class="ct">投稿の味付け</div>
+      <div class="field"><label>届けたい人</label><input type="text" id="target" placeholder="例: 外仕事の人 / 推し活勢"></div>
+      <div class="field"><label>ハッシュタグ</label><input type="text" id="hashtags" placeholder="例: #UVケア #日傘 #楽天ROOM"></div>
+    </div>
+    <button class="btn btn-dark" onclick="generateItem()">✨ 投稿文を生成する</button>
+    <div class="rblock" id="item-results">
+      <div class="rcard"><div class="prow"><div class="picon icon-t">𝕋</div><div class="plabel">Threads</div><div class="pcount" id="tc"></div></div><div class="cbox" id="t-text"></div><button class="bcopy" onclick="doCopy('t-text',this)">コピー</button></div>
+      <div class="rcard"><div class="prow"><div class="picon icon-r">楽</div><div class="plabel">楽天ROOM</div><div class="pcount" id="rc"></div></div><div class="cbox" id="r-text"></div><button class="bcopy" onclick="doCopy('r-text',this)">コピー</button></div>
+      <div class="rcard"><div class="prow"><div class="picon icon-x">𝕏</div><div class="plabel">X（Twitter）</div><div class="pcount" id="xc"></div></div><div class="cbox" id="x-text"></div><button class="bcopy" onclick="doCopy('x-text',this)">コピー</button></div>
+      <div class="rcard"><div class="prow"><div class="picon icon-i">📷</div><div class="plabel">Instagram 見出し</div><div class="pcount" id="ic"></div></div><div class="cbox" id="i-text"></div><button class="bcopy" onclick="doCopy('i-text',this)">コピー</button></div>
+      <button class="btn btn-outline" onclick="dlCSV('item')">📥 投稿文CSVでダウンロード</button>
+    </div>
+  </div>
+  <div id="sub-hotel" style="display:none">
+    <div class="card">
+      <div class="ct">ホテル情報</div>
+      <div class="field"><label>ホテル名<span class="req">*</span></label><input type="text" id="h-name" placeholder="例: ザ・リッツ・カールトン京都"></div>
+      <div class="field"><label>エリア<span class="req">*</span></label><input type="text" id="h-area" placeholder="例: 京都・鴨川沿い"></div>
+      <div class="field"><label>宿泊料金<span class="req">*</span></label><input type="text" id="h-price" placeholder="例: 1泊50,000円〜"></div>
+    </div>
+    <div class="card">
+      <div class="ct">おすすめポイント</div>
+      <div class="field"><label>一番よかったこと<span class="req">*</span></label><input type="text" id="h-point1" placeholder="例: 部屋から鴨川と東山が一望できた"></div>
+      <div class="field"><label>泊まって気づいた体験</label><textarea id="h-exp" placeholder="例: チェックイン時に抹茶のウェルカムドリンクが出て丁寧だった"></textarea></div>
+      <div class="field">
+        <label>こんな人向け</label>
+        <div class="chips" id="hotel-chips">
+          <button class="chip" onclick="toggleChip(this)">💑 カップル旅行</button>
+          <button class="chip" onclick="toggleChip(this)">👩‍👧 女子旅</button>
+          <button class="chip" onclick="toggleChip(this)">🎂 記念日</button>
+          <button class="chip" onclick="toggleChip(this)">👨‍👩‍👧 ファミリー</button>
+          <button class="chip" onclick="toggleChip(this)">🎤 推し活遠征</button>
+          <button class="chip" onclick="toggleChip(this)">🧘 ひとり旅</button>
+        </div>
+      </div>
+      <div class="field"><label>惜しかった点</label><input type="text" id="h-weak" placeholder="例: 駐車場が少し狭い"></div>
+    </div>
+    <div class="card">
+      <div class="ct">投稿の味付け</div>
+      <div class="field"><label>ハッシュタグ</label><input type="text" id="h-hashtags" placeholder="例: #京都旅行 #国内ホテル"></div>
+    </div>
+    <button class="btn btn-hotel" onclick="generateHotel()">🏨 投稿文を生成する</button>
+    <div class="rblock" id="hotel-results">
+      <div class="rcard"><div class="prow"><div class="picon icon-t">𝕋</div><div class="plabel">Threads</div><div class="pcount" id="htc"></div></div><div class="cbox" id="ht-text"></div><button class="bcopy" onclick="doCopy('ht-text',this)">コピー</button></div>
+      <div class="rcard"><div class="prow"><div class="picon icon-i">📷</div><div class="plabel">Instagram 投稿文</div><div class="pcount" id="hic"></div></div><div class="cbox" id="hi-text"></div><button class="bcopy" onclick="doCopy('hi-text',this)">コピー</button></div>
+      <div class="rcard"><div class="prow"><div class="picon icon-h">比</div><div class="plabel">比較表用・一言紹介</div><div class="pcount" id="hsc"></div></div><div class="cbox" id="hs-text"></div><button class="bcopy" onclick="doCopy('hs-text',this)">コピー</button></div>
+      <button class="btn btn-outline" onclick="dlCSV('hotel')">📥 投稿文CSVでダウンロード</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-data">
+  <div class="dbanner" id="dbanner"></div>
+  <div class="card">
+    <div class="ct">エクスポート（バックアップ）</div>
+    <p class="ddesc">登録した商品データをファイルに保存します。iCloud Driveに保存しておくと安心です。</p>
+    <div class="dcount" id="dcount"></div>
+    <button class="btn btn-dark" onclick="exportJSON()" style="margin-top:14px">📤 JSONでエクスポート（推奨）</button>
+    <button class="btn btn-outline" onclick="exportCSV()" style="margin-top:0">📊 CSVでエクスポート</button>
+  </div>
+  <div class="card">
+    <div class="ct">インポート（復元）</div>
+    <p class="ddesc">以前エクスポートしたファイルを読み込んで復元します。既存データに追加されます。</p>
+    <div class="idrop" onclick="document.getElementById('file-input').click()">
+      <div class="iicon">📂</div>
+      <div class="ilabel">タップしてファイルを選ぶ</div>
+      <div class="isub">JSON / CSV どちらも対応</div>
+    </div>
+    <input type="file" id="file-input" accept=".json,.csv" style="display:none" onchange="handleFileImport(this)">
+  </div>
+  <div class="card">
+    <div class="ct">保存テスト</div>
+    <p class="ddesc" style="margin-bottom:12px">保存が正常に動作しているか確認します。</p>
+    <div id="test-results"></div>
+    <button class="btn btn-outline" onclick="runStorageTest()" style="margin-top:12px">🔍 保存テストを実行</button>
+  </div>
+  <div class="card dcard">
+    <div class="ct" style="color:#c62828">⚠️ データ削除</div>
+    <p class="ddesc">登録した商品データをすべて削除します。削除前に必ずエクスポートしてください。</p>
+    <button class="btn" style="background:#ffebee;color:#c62828;margin-top:12px" onclick="clearAllData()">🗑 すべて削除する</button>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" id="nav-note" onclick="switchScreen('note')"><span class="ni">📒</span>商品ノート</button>
+  <button class="nav-btn" id="nav-add" onclick="switchScreen('add')"><span class="ni" id="nav-add-icon">➕</span>商品登録</button>
+  <button class="nav-btn" id="nav-post" onclick="switchScreen('post')"><span class="ni">✍️</span>投稿生成</button>
+  <button class="nav-btn" id="nav-data" onclick="switchScreen('data')"><span class="ni">💾</span>データ</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ══ ストレージ ══
+   localStorage を使う。
+   Claude プレビュー等でアクセス不可の場合は warn を表示するが
+   それ以外は常に localStorage を使い続ける。               */
+var KEY = 'sns_products_v2';
+
+function lsAvailable() {
+  try {
+    var t = '__sns_test__';
+    localStorage.setItem(t, '1');
+    var ok = localStorage.getItem(t) === '1';
+    localStorage.removeItem(t);
+    return ok;
+  } catch(e) { return false; }
+}
+
+function loadProducts() {
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (!raw) return [];
+    var arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  } catch(e) { return []; }
+}
+
+function saveProducts(list) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(list));
+    return true;
+  } catch(e) {
+    showToast('⚠️ 保存失敗: ' + e.message);
+    return false;
+  }
+}
+
+/* ══ 起動時ステータス表示 ══ */
+function updateStorageStatus() {
+  var el = document.getElementById('storage-status');
+  var count = loadProducts().length;
+  if (lsAvailable()) {
+    el.textContent = '💾 保存データ: ' + count + '件';
+    el.className = 'ok';
+  } else {
+    el.textContent = '⚠️ 保存不可（Safariで開いてください）';
+    el.className = 'warn';
+  }
+}
+
+/* ══ 保存テスト ══ */
+window.runStorageTest = function() {
+  var rows = [];
+
+  // テスト1: localStorage 使用可否
+  var avail = lsAvailable();
+  rows.push({label:'localStorage 使用可否', ok:avail, val:avail?'✅ 使用可':'❌ 使用不可'});
+
+  // テスト2: 書き込みテスト
+  var writeOk = false;
+  try {
+    localStorage.setItem('__write_test__','hello');
+    writeOk = localStorage.getItem('__write_test__') === 'hello';
+    localStorage.removeItem('__write_test__');
+  } catch(e) {}
+  rows.push({label:'書き込み・読み込みテスト', ok:writeOk, val:writeOk?'✅ 成功':'❌ 失敗'});
+
+  // テスト3: 商品データ件数
+  var products = loadProducts();
+  rows.push({label:'現在の保存データ件数', ok:true, val:products.length + ' 件'});
+
+  // テスト4: データキー確認
+  var raw = null;
+  try { raw = localStorage.getItem(KEY); } catch(e) {}
+  rows.push({label:'ストレージキー (' + KEY + ')', ok:raw!==null, val:raw!==null?'✅ 存在する':'⚪ データなし'});
+
+  // テスト5: データ容量確認
+  var size = raw ? new Blob([raw]).size : 0;
+  rows.push({label:'データサイズ', ok:true, val:size < 1000 ? size + ' bytes' : Math.round(size/1024*10)/10 + ' KB'});
+
+  // テスト6: 環境確認
+  var ua = navigator.userAgent;
+  var isSafari = /Safari/.test(ua) && !/Chrome/.test(ua);
+  var isStandalone = window.navigator.standalone === true;
+  rows.push({label:'ブラウザ', ok:isSafari, val:isSafari?'✅ Safari':'⚠️ Safari以外 ('+ua.slice(0,40)+'...)'});
+  rows.push({label:'ホーム画面アプリ', ok:isStandalone, val:isStandalone?'✅ ホーム画面から起動':'⚪ ブラウザから起動'});
+
+  var html = rows.map(function(r){
+    return '<div class="test-row"><span class="test-label">'+r.label+'</span><span class="test-val '+(r.ok?'test-ok':'test-ng')+'">'+r.val+'</span></div>';
+  }).join('');
+  document.getElementById('test-results').innerHTML = html;
+};
+
+/* ══ 画面切替 ══ */
+function switchScreen(name) {
+  if (name === 'data') updateDataScreen();
+  ['note','add','post','data'].forEach(function(n) {
+    document.getElementById('screen-'+n).classList.toggle('active', n===name);
+    document.getElementById('nav-'+n).classList.toggle('active', n===name);
+  });
+  if (name === 'note') { updateStorageStatus(); renderList(); }
+}
+window.switchScreen = switchScreen;
+
+/* ══ カテゴリ定義 ══ */
+var CAT_LIST = [
+  {id:'uv',icon:'☀️',name:'UV・日傘',desc:'遮光・日焼け対策',feature:'完全遮光100%・軽量・折りたたみ可',point:'外回りが多い日でも夕方まで全然焼けなくて感動した',target:'日焼けしたくない人、外回りが多い人',hashtags:'#日傘 #UVケア #紫外線対策 #楽天ROOM'},
+  {id:'cosme',icon:'💄',name:'コスメ・美容',desc:'スキンケア・メイク',feature:'肌なじみが良い・低刺激・プチプラ',point:'使い始めてから朝の肌の調子が明らかに変わった',target:'肌荒れが気になる人',hashtags:'#スキンケア #コスメ #美容 #楽天ROOM'},
+  {id:'storage',icon:'🗂',name:'収納・整理',desc:'バッグ・部屋の整理',feature:'仕切り多め・軽量・コンパクト',point:'カバンの中が整理されてから毎日のストレスが激減した',target:'荷物が多い人、カバンがぐちゃぐちゃな人',hashtags:'#収納 #バッグ整理 #スッキリ暮らし #楽天ROOM'},
+  {id:'fashion',icon:'👗',name:'ファッション',desc:'コーデ・着回し',feature:'着回し力高い・上品・シンプル',point:'これ1枚あると朝の準備が格段に楽になった',target:'おしゃれしたいけど時間がない人',hashtags:'#ファッション #コーデ #大人カジュアル #楽天ROOM'},
+  {id:'kitchen',icon:'🍳',name:'キッチン・料理',desc:'調理器具・食器',feature:'時短・洗いやすい・コンパクト収納',point:'洗い物が減って料理のハードルが下がった',target:'料理の時短をしたい人',hashtags:'#キッチングッズ #料理 #時短 #楽天ROOM'},
+  {id:'health',icon:'💊',name:'健康・サプリ',desc:'サプリ・フィットネス',feature:'続けやすい・手軽・効果を実感',point:'思ったより無理なく続けられた。体が軽くなった気がする',target:'健康習慣を始めたい人',hashtags:'#健康 #サプリ #ダイエット #楽天ROOM'},
+  {id:'oshi',icon:'🎤',name:'推し活・遠征',desc:'ライブ・グッズ',feature:'軽量・コンパクト・遠征で活躍',point:'遠征がもっと楽しくなった。これがあるだけで心強い',target:'推し活・遠征を楽しんでいる人',hashtags:'#推し活 #遠征 #ライブ #楽天ROOM'},
+  {id:'travel',icon:'✈️',name:'旅行グッズ',desc:'トラベル・パッキング',feature:'軽量・多機能・コンパクト',point:'荷物がコンパクトにまとまって旅のストレスが激減した',target:'旅行好き、荷物を減らしたい人',hashtags:'#旅行 #旅行グッズ #国内旅行 #楽天ROOM'},
+  {id:'baby',icon:'👶',name:'育児・ベビー',desc:'ベビーグッズ・育児',feature:'安全設計・使いやすい・洗いやすい',point:'ちょっとした工夫で育児がぐっと楽になった',target:'ママ・パパ、育児中の人',hashtags:'#育児 #ベビーグッズ #ママ #楽天ROOM'},
+  {id:'other',icon:'📦',name:'その他',desc:'上記以外のカテゴリ',feature:'',point:'',target:'',hashtags:'#楽天ROOM #楽天お買い物'}
+];
+
+var CAT_DICT = [
+  {keys:['uv','日傘','紫外線','遮光'],hashtags:'#日傘 #UVケア #紫外線対策 #楽天ROOM',target:'日焼けしたくない人、外回りが多い人',before:'日差しで疲れる、通勤だけで腕が焼ける',after:'外に出るのが少し楽になった。日差しを気にしなくてすむだけでこんなに違うのかと感動'},
+  {keys:['コスメ','スキンケア','美容','化粧'],hashtags:'#スキンケア #コスメ #美容 #楽天ROOM',target:'肌荒れが気になる人',before:'肌のべたつきや乾燥が気になってた',after:'朝起きた時の肌の調子が明らかに変わった'},
+  {keys:['収納','整理','ポーチ','仕切り'],hashtags:'#収納 #バッグ整理 #スッキリ暮らし #楽天ROOM',target:'荷物が多い人',before:'カバンの中で物が迷子になる',after:'必要なものがすぐ取り出せるようになった。地味だけど毎日ストレスが減った'},
+  {keys:['ファッション','コーデ','ワンピース'],hashtags:'#ファッション #コーデ #大人カジュアル #楽天ROOM',target:'おしゃれしたいけど時間がない人',before:'毎朝コーデに時間がかかる',after:'これ1枚あると朝の準備が格段に楽になった'},
+  {keys:['キッチン','料理','鍋','フライパン'],hashtags:'#キッチングッズ #料理 #時短 #楽天ROOM',target:'料理の時短をしたい人',before:'料理に時間がかかる',after:'洗い物が減って料理のハードルが下がった'},
+  {keys:['健康','サプリ','プロテイン','ダイエット'],hashtags:'#健康 #サプリ #ダイエット #楽天ROOM',target:'健康習慣を始めたい人',before:'続けられるか不安だった',after:'思ったより無理なく続けられてる。体が軽くなった気がする'},
+  {keys:['推し','遠征','ライブ','グッズ'],hashtags:'#推し活 #遠征 #ライブ #楽天ROOM',target:'推し活・遠征を楽しんでいる人',before:'遠征の荷物が多くてパンパンになってた',after:'遠征がもっと楽しくなった。これがあるだけで心強い'},
+  {keys:['旅行','トラベル','スーツケース'],hashtags:'#旅行 #旅行グッズ #国内旅行 #楽天ROOM',target:'旅行好き',before:'パッキングが毎回大変だった',after:'荷物がコンパクトにまとまって旅のストレスが激減した'},
+  {keys:['育児','ベビー','ママ','子育て'],hashtags:'#育児 #ベビーグッズ #ママ #楽天ROOM',target:'ママ・パパ、育児中の人',before:'子育ての合間にバタバタしてた',after:'ちょっとした工夫で育児がぐっと楽になった'}
+];
+
+function catSuggest(cat){if(!cat)return null;var k=cat.toLowerCase();for(var i=0;i<CAT_DICT.length;i++){var d=CAT_DICT[i];for(var j=0;j<d.keys.length;j++){if(k.indexOf(d.keys[j])!==-1)return d;}}return null;}
+
+/* ══ 登録ステップ ══ */
+var selCatId=null, editId=null;
+
+function buildCatGrid(){var h='<div class="cgrid">';CAT_LIST.forEach(function(c){h+='<button class="ccard'+(selCatId===c.id?' sel':'')+'" onclick="selectCat(\''+c.id+'\')"><span class="cicon">'+c.icon+'</span><span class="cname">'+c.name+'</span><span class="cdesc">'+c.desc+'</span></button>';});h+='</div>';document.getElementById('cat-grid').innerHTML=h;}
+window.buildCatGrid=buildCatGrid;
+window.selectCat=function(id){selCatId=id;buildCatGrid();};
+
+function showStep(n){[1,2,3].forEach(function(i){document.getElementById('reg-step'+i).style.display=(i===n)?'':'none';var b=document.getElementById('sbar-'+i);b.classList.toggle('active',i===n);b.classList.toggle('done',i<n);});window.scrollTo(0,0);}
+
+window.regNext1=function(){if(!gv('reg-name')||!gv('reg-price')){showToast('⚠️ 商品名と価格を入力してください');return;}buildCatGrid();showStep(2);};
+window.regNext2=function(){var cu=gv('reg-category-custom');if(!selCatId&&!cu){showToast('⚠️ カテゴリを選ぶか直接入力してください');return;}var cat=selCatId?CAT_LIST.filter(function(c){return c.id===selCatId;})[0]:null;document.getElementById('reg-category').value=cat?cat.name:cu;document.getElementById('reg-feature').value=cat?cat.feature:'';document.getElementById('reg-point').value=cat?cat.point:'';document.getElementById('reg-target').value=cat?cat.target:'';document.getElementById('reg-hashtags').value=cat?cat.hashtags:'';showStep(3);};
+window.regBack=function(n){showStep(n);};
+
+window.saveProduct=function(){
+  var name=gv('reg-name'),price=gv('reg-price');
+  if(!name||!price){showToast('⚠️ 商品名と価格は必須です');return;}
+  var products=loadProducts();
+  var data={name:name,url:gv('reg-url'),price:Number(price),category:gv('reg-category'),feature:gv('reg-feature'),point:gv('reg-point'),target:gv('reg-target'),hashtags:gv('reg-hashtags')};
+  if(editId){
+    var idx=-1;products.forEach(function(p,i){if(p.id===editId)idx=i;});
+    if(idx!==-1)products[idx]=Object.assign({},products[idx],data);
+    editId=null;document.getElementById('nav-add-icon').textContent='➕';
+  } else {
+    data.id=Date.now().toString();products.unshift(data);
+  }
+  var ok=saveProducts(products);
+  if(ok){showToast('✅ 保存しました（'+products.length+'件）');updateStorageStatus();clearReg();switchScreen('note');}
+};
+
+function clearReg(){['reg-name','reg-url','reg-price','reg-category','reg-feature','reg-point','reg-target','reg-hashtags','reg-category-custom'].forEach(function(id){document.getElementById(id).value='';});selCatId=null;showStep(1);}
+
+window.editProduct=function(id){var p=loadProducts().filter(function(x){return x.id===id;})[0];if(!p)return;editId=id;document.getElementById('reg-name').value=p.name||'';document.getElementById('reg-url').value=p.url||'';document.getElementById('reg-price').value=p.price||'';document.getElementById('reg-category').value=p.category||'';document.getElementById('reg-feature').value=p.feature||'';document.getElementById('reg-point').value=p.point||'';document.getElementById('reg-target').value=p.target||'';document.getElementById('reg-hashtags').value=p.hashtags||'';selCatId=null;CAT_LIST.forEach(function(c){if(c.name===p.category)selCatId=c.id;});document.getElementById('nav-add-icon').textContent='✏️';switchScreen('add');showStep(3);};
+window.deleteProduct=function(id){if(!confirm('この商品を削除しますか？'))return;var list=loadProducts().filter(function(p){return p.id!==id;});saveProducts(list);updateStorageStatus();renderList();showToast('🗑 削除しました');};
+
+/* ══ 一覧 ══ */
+var activeFilter='すべて';
+function renderList(){
+  var products=loadProducts();
+  var q=document.getElementById('note-search').value.trim().toLowerCase();
+  var cats=['すべて'];products.forEach(function(p){if(p.category&&cats.indexOf(p.category)===-1)cats.push(p.category);});
+  document.getElementById('filter-row').innerHTML=cats.map(function(c){return'<button class="fchip'+(c===activeFilter?' on':'')+'" onclick="setFilter(\''+escA(c)+'\')">'+escH(c)+'</button>';}).join('');
+  var list=products;
+  if(activeFilter!=='すべて')list=list.filter(function(p){return p.category===activeFilter;});
+  if(q)list=list.filter(function(p){return(p.name||'').toLowerCase().indexOf(q)!==-1||(p.feature||'').toLowerCase().indexOf(q)!==-1||(p.point||'').toLowerCase().indexOf(q)!==-1;});
+  var area=document.getElementById('product-list-area');
+  if(list.length===0){area.innerHTML='<div class="empty"><div class="eicon">📭</div><p>'+(products.length===0?'商品がまだ登録されていません<br>「商品登録」タブから追加してください':'該当する商品がありません')+'</p></div>';return;}
+  area.innerHTML='<div class="plist">'+list.map(function(p){var badge=p.category?'<span class="cbadge">'+escH(p.category)+'</span>':'';var ul=p.url?'<a href="'+escA(p.url)+'" target="_blank" class="purl">🔗 '+escH(p.url)+'</a>':'';return'<div class="pitem"><div class="pname">'+escH(p.name)+'</div><div class="pmeta">'+badge+'¥'+Number(p.price).toLocaleString('ja-JP')+(p.feature?' ｜ '+escH(p.feature):'')+'</div>'+ul+(p.point?'<div class="ppoint">'+escH(p.point)+'</div>':'')+'<div class="pactions"><button class="btn-sm btn-green" onclick="useProduct(\''+p.id+'\')">✍️ 投稿文を作る</button><button class="btn-sm btn-blue" onclick="editProduct(\''+p.id+'\')">編集</button><button class="btn-sm btn-red" onclick="deleteProduct(\''+p.id+'\')">削除</button></div></div>';}).join('')+'</div>';
+}
+window.setFilter=function(cat){activeFilter=cat;renderList();};
+
+/* ══ 投稿フォーム反映 ══ */
+window.useProduct=function(id){var p=loadProducts().filter(function(x){return x.id===id;})[0];if(!p)return;var s=catSuggest(p.category);document.getElementById('name').value=p.name||'';document.getElementById('price').value=p.price||'';document.getElementById('category').value=p.category||'';document.getElementById('fav').value=p.feature||'';document.getElementById('hashtags').value=p.hashtags||(s?s.hashtags:'');document.getElementById('target').value=p.target||(s?s.target:'');document.getElementById('before').value=s?s.before:'';document.getElementById('after').value=p.point||(s?s.after:'');document.getElementById('selname').textContent=p.name;document.getElementById('selbanner').classList.add('show');switchSub('item');switchScreen('post');window.scrollTo(0,0);showToast('📦 「'+p.name+'」を読み込みました');};
+window.clearSel=function(){document.getElementById('selbanner').classList.remove('show');};
+function switchSub(mode){document.querySelectorAll('.stab').forEach(function(t,i){t.classList.toggle('active',(mode==='item'&&i===0)||(mode==='hotel'&&i===1));});document.getElementById('sub-item').style.display=mode==='item'?'':'none';document.getElementById('sub-hotel').style.display=mode==='hotel'?'':'none';}
+window.switchSub=switchSub;
+window.toggleChip=function(el){el.classList.toggle('on');};
+
+/* ══ 投稿生成（商品） ══ */
+var iHist=[],hHist=[];
+window.generateItem=function(){var name=gv('name'),price=gv('price'),before=gv('before'),after=gv('after'),fav=gv('fav'),target=gv('target'),hashtags=gv('hashtags');var scenes=chips('scene-chips');var sc=gv('scene-custom');if(sc)scenes.push(sc);if(!name||!price||!before||!after){showToast('⚠️ 必須項目（*）を入力してください');return;}var t=mkT(name,price,before,after,fav,scenes,target,hashtags);var r=mkR(name,price,before,after,fav,scenes,target,hashtags);var x=mkX(name,price,before,after,hashtags);var ig=mkIG(name,before,scenes);setTxt('t-text','tc',t);setTxt('r-text','rc',r);setTxt('x-text','xc',x);setTxt('i-text','ic',ig);showBlock('item-results');iHist.push({生成日時:nowStr(),商品名:name,価格:price,Threads:t,楽天ROOM:r,X:x,Instagram:ig});};
+function mkT(name,price,before,after,fav,scenes,target,hashtags){var scene=scenes[0]||'';var fL=fav?'\nとくに「'+fav+'」のが地味にうれしい。':'';var tL=target?'\n'+target+'には本当におすすめ。':'';var sH=scene?'【'+scene+'で買ってよかったもの】\n\n':'';var n=Math.floor(Math.random()*3);if(n===0)return(before+'って悩んでたんだけど、\n'+name+' 買ってから変わった。\n\n'+after+fL+tL+'\n\n¥'+fmt(price)+' → 楽天ROOMのリンクから👇\n'+hashtags).trim();if(n===1)return(sH+name+'（¥'+fmt(price)+'）\n\n'+before+'って感じだったのが、\n'+after+fL+'\n\n楽天ROOMでリンク貼ってます✔\n'+hashtags).trim();return('正直、'+before+'って思ってた。\nでも '+name+' 使ってから\n\n'+after+fL+tL+'\n\n¥'+fmt(price)+' / 楽天ROOMで紹介中🔗\n'+hashtags).trim();}
+function mkR(name,price,before,after,fav,scenes,target,hashtags){var sS=scenes.join('・')||'日常';var fL=fav?'\n✔ '+fav:'';var tL=target?'\n\n「'+target+'」に特におすすめです。':'';return('【'+name+'】¥'+fmt(price)+'\n\n'+sS+'で実際に使ってみました。\n\n'+before+'という状況だったのが、'+after+fL+tL+'\n\nリンクからチェックしてみてください👇\n'+hashtags).trim();}
+function mkX(name,price,before,after,hashtags){var s=after.length>35?after.slice(0,35)+'…':after;return(before+'→ '+name+' で解決した\n\n'+s+'\n\n¥'+fmt(price)+' 楽天ROOMで見てみて\n'+hashtags).trim();}
+function mkIG(name,before,scenes){var s=scenes[0]||'日常',b=before.length>20?before.slice(0,20)+'…':before;return'「'+b+'」が変わった話\n'+name+' × '+s;}
+
+/* ══ 投稿生成（ホテル） ══ */
+window.generateHotel=function(){var name=gv('h-name'),area=gv('h-area'),price=gv('h-price'),point1=gv('h-point1');if(!name||!area||!price||!point1){showToast('⚠️ 必須項目（*）を入力してください');return;}var exp=gv('h-exp'),weak=gv('h-weak'),hashtags=gv('h-hashtags'),who=chips('hotel-chips');var t=hT(name,area,price,point1,exp,weak,who,hashtags);var ig=hIG(name,area,price,point1,exp,weak,who,hashtags);var s=hS(name,area,price,point1,who);setTxt('ht-text','htc',t);setTxt('hi-text','hic',ig);setTxt('hs-text','hsc',s);showBlock('hotel-results');hHist.push({生成日時:nowStr(),ホテル名:name,エリア:area,料金:price,Threads:t,Instagram:ig,一言:s});};
+function hT(name,area,price,point1,exp,weak,who,hashtags){var wS=who.length?who.join('・')+'にぴったり。':'';var eL=exp?'\n\n'+exp:'',wL=weak?'\n\nちょっと気になった点：'+weak:'';var n=Math.floor(Math.random()*3);if(n===0)return('【泊まってよかったホテル】\n'+name+'（'+area+'）\n\n'+point1+eL+wL+'\n\n料金：'+price+'\n'+wS+'\n\n'+hashtags).trim();if(n===1)return(area+'で泊まった '+name+'、最高だった。\n\n'+point1+eL+'\n'+wS+wL+'\n\n'+price+' / '+hashtags).trim();return('正直このホテルはリピートしたい。\n\n'+name+'（'+area+'）\n'+point1+eL+wL+'\n\n料金：'+price+'\n'+hashtags).trim();}
+function hIG(name,area,price,point1,exp,weak,who,hashtags){var wL=who.length?'\n\n✦ '+who.join(' / ')+' におすすめ':'';var eL=exp?'\n\n'+exp:'',wkL=weak?'\n\n気になった点：'+weak:'';return('🏨 '+name+'\n📍 '+area+'\n💴 '+price+'\n\n✦ '+point1+eL+wkL+wL+'\n\n'+hashtags).trim();}
+function hS(name,area,price,point1,who){var wS=who.length?'（'+who.join('・')+'向け）':'';return name+wS+'｜'+area+'｜'+price+'｜'+point1;}
+
+/* ══ データ管理 ══ */
+function updateDataScreen(){var p=loadProducts();var el=document.getElementById('dcount');if(el)el.textContent='現在 '+p.length+' 件の商品が登録されています';}
+window.exportJSON=function(){var p=loadProducts();if(!p.length){showToast('登録商品がありません');return;}dlBlob(JSON.stringify({version:2,exportedAt:new Date().toISOString(),products:p},null,2),'application/json','sns_products_'+ds()+'.json');showToast('📤 JSONをエクスポートしました');};
+window.exportCSV=function(){var p=loadProducts();if(!p.length){showToast('登録商品がありません');return;}var keys=['id','name','url','price','category','feature','point','target','hashtags'];var esc=function(v){return'"'+String(v||'').replace(/"/g,'""')+'"';};var rows=[keys.join(',')].concat(p.map(function(row){return keys.map(function(k){return esc(row[k]);}).join(',');}));dlBlob('\uFEFF'+rows.join('\n'),'text/csv','sns_products_'+ds()+'.csv');showToast('📊 CSVをエクスポートしました');};
+window.handleFileImport=function(input){var file=input.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{if(file.name.slice(-5)==='.json')impJSON(e.target.result);else if(file.name.slice(-4)==='.csv')impCSV(e.target.result);else showDB('err','⚠️ JSONまたはCSVファイルを選んでください');}catch(err){showDB('err','⚠️ 読み込みに失敗: '+err.message);}input.value='';};reader.readAsText(file,'UTF-8');};
+function impJSON(text){var data=JSON.parse(text);var inc=Array.isArray(data)?data:(data.products||[]);if(!inc.length){showDB('err','⚠️ 商品データが見つかりませんでした');return;}var ex=loadProducts();var ids={};ex.forEach(function(p){ids[p.id]=1;});var nw=inc.filter(function(p){return!ids[p.id];});saveProducts(nw.concat(ex));updateStorageStatus();updateDataScreen();showDB('ok','✅ '+nw.length+' 件をインポートしました（重複 '+(inc.length-nw.length)+' 件スキップ）');}
+function impCSV(text){var clean=text.replace(/^\uFEFF/,'');var lines=clean.split('\n').filter(function(l){return l.trim();});if(lines.length<2){showDB('err','⚠️ データが見つかりませんでした');return;}var headers=parseCSV(lines[0]);var inc=lines.slice(1).map(function(line){var vals=parseCSV(line),obj={};headers.forEach(function(h,i){obj[h]=vals[i]||'';});if(!obj.id)obj.id=Date.now().toString()+Math.random().toString(36).slice(2,6);if(obj.price)obj.price=Number(obj.price)||0;return obj;}).filter(function(p){return p.name;});if(!inc.length){showDB('err','⚠️ 有効な商品データがありませんでした');return;}var ex=loadProducts();var ids={};ex.forEach(function(p){ids[p.id]=1;});var nw=inc.filter(function(p){return!ids[p.id];});saveProducts(nw.concat(ex));updateStorageStatus();updateDataScreen();showDB('ok','✅ '+nw.length+' 件をインポートしました（重複 '+(inc.length-nw.length)+' 件スキップ）');}
+function parseCSV(row){var result=[],cur='',inQ=false;for(var i=0;i<row.length;i++){var ch=row[i];if(ch==='"'){if(inQ&&row[i+1]==='"'){cur+='"';i++;}else{inQ=!inQ;}}else if(ch===','&&!inQ){result.push(cur);cur='';}else{cur+=ch;}}result.push(cur);return result;}
+window.clearAllData=function(){var p=loadProducts();if(!p.length){showToast('データがありません');return;}if(!confirm('登録中の '+p.length+' 件をすべて削除しますか？\n\n削除前にエクスポートを推奨します。'))return;saveProducts([]);updateStorageStatus();updateDataScreen();showDB('ok','🗑 すべてのデータを削除しました');};
+function showDB(type,msg){var el=document.getElementById('dbanner');el.textContent=msg;el.className='dbanner '+type;el.style.display='block';setTimeout(function(){el.style.display='none';},6000);}
+window.dlCSV=function(mode){var data=mode==='hotel'?hHist:iHist;if(!data.length){showToast('まだ生成履歴がありません');return;}var keys=Object.keys(data[0]);var esc=function(v){return'"'+String(v).replace(/"/g,'""')+'"';};var rows=[keys.join(',')].concat(data.map(function(r){return keys.map(function(k){return esc(r[k]);}).join(',');}));dlBlob('\uFEFF'+rows.join('\n'),'text/csv','sns_post_'+ds()+'.csv');showToast('📥 CSVをダウンロードしました');};
+
+/* ══ ユーティリティ ══ */
+function gv(id){return document.getElementById(id).value.trim();}
+function fmt(p){return Number(p).toLocaleString('ja-JP');}
+function nowStr(){return new Date().toLocaleString('ja-JP');}
+function ds(){return new Date().toISOString().slice(0,10);}
+function chips(gid){return Array.prototype.map.call(document.querySelectorAll('#'+gid+' .chip.on'),function(c){return c.textContent.replace(/^\S{1,2}\s/,'');});}
+function setTxt(tid,cid,txt){document.getElementById(tid).textContent=txt;document.getElementById(cid).textContent=txt.length+'文字';}
+function showBlock(id){var el=document.getElementById(id);el.style.display='block';el.scrollIntoView({behavior:'smooth'});}
+window.doCopy=function(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent).then(function(){btn.textContent='✅ コピーしました';btn.classList.add('done');setTimeout(function(){btn.textContent='コピー';btn.classList.remove('done');},2000);}).catch(function(){showToast('⚠️ コピーに失敗しました');});};
+function dlBlob(content,type,filename){var blob=new Blob([content],{type:type});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();}
+function escH(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function escA(str){return String(str||'').replace(/"/g,'&quot;');}
+var _tt;
+function showToast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(function(){el.classList.remove('show');},2400);}
+
+/* ══ 初期化 ══ */
+updateStorageStatus();
+renderList();
+
+})();
+</script>
+
+</body>
+</html>
