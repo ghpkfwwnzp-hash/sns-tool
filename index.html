@@ -355,20 +355,20 @@ header p{font-size:11px;color:#888;margin-top:2px}
 (function(){
 'use strict';
 
-/* ── ストレージ ── */
+/* \u2500\u2500 \u30b9\u30c8\u30ec\u30fc\u30b8 \u2500\u2500 */
 var KEY = 'sns_v3';
 function load(){try{var r=localStorage.getItem(KEY);return r?JSON.parse(r):[];}catch(e){return[];}}
-function save(list){try{localStorage.setItem(KEY,JSON.stringify(list));return true;}catch(e){toast('保存失敗');return false;}}
+function save(list){try{localStorage.setItem(KEY,JSON.stringify(list));return true;}catch(e){toast('\u4fdd\u5b58\u5931\u6557');return false;}}
 
-/* ── ステータス表示 ── */
+/* \u2500\u2500 \u30b9\u30c6\u30fc\u30bf\u30b9\u8868\u793a \u2500\u2500 */
 function updateSS(){
   var el=document.getElementById('ss');
   var n=load().length;
-  try{localStorage.setItem('__t','1');localStorage.removeItem('__t');el.textContent='保存データ: '+n+'件';el.className='ok';}
-  catch(e){el.textContent='保存不可（Safariで開いてください）';el.className='warn';}
+  try{localStorage.setItem('__t','1');localStorage.removeItem('__t');el.textContent='\u4fdd\u5b58\u30c7\u30fc\u30bf: '+n+'\u4ef6';el.className='ok';}
+  catch(e){el.textContent='\u4fdd\u5b58\u4e0d\u53ef\uff08Safari\u3067\u958b\u3044\u3066\u304f\u3060\u3055\u3044\uff09';el.className='warn';}
 }
 
-/* ── 画面切替 ── */
+/* \u2500\u2500 \u753b\u9762\u5207\u66ff \u2500\u2500 */
 function switchSc(name){
   if(name==='data')updateDC();
   if(name==='repost')renderRP();
@@ -380,27 +380,27 @@ function switchSc(name){
 }
 window.switchSc=switchSc;
 
-/* ── カテゴリ定義 ── */
+/* \u2500\u2500 \u30ab\u30c6\u30b4\u30ea\u5b9a\u7fa9 \u2500\u2500 */
 var CATS=[
-  {id:'uv',icon:'☀️',name:'UV・日傘',desc:'遮光・日焼け対策',feat:'完全遮光100%・軽量・折りたたみ可',point:'外回りが多い日でも夕方まで全然焼けなくて感動した',target:'現場女子・外仕事の人・日傘デビューしたい人',htags:'#楽天ROOM #楽天購入品 #UV対策 #日焼け対策 #現場女子 #日傘 #UVケア'},
-  {id:'cosme',icon:'💄',name:'コスメ・美容',desc:'スキンケア・メイク',feat:'肌なじみが良い・低刺激・プチプラ',point:'使い始めてから朝の肌の調子が明らかに変わった',target:'肌荒れが気になる人',htags:'#楽天ROOM #楽天購入品 #スキンケア #コスメ #美容 #プチプラコスメ'},
-  {id:'storage',icon:'🗂',name:'収納・整理',desc:'バッグ・部屋の整理',feat:'仕切り多め・軽量・コンパクト',point:'カバンの中が整理されてから毎日のストレスが激減した',target:'荷物が多い人',htags:'#楽天ROOM #楽天購入品 #収納 #バッグ整理 #スッキリ暮らし'},
-  {id:'fashion',icon:'👗',name:'ファッション',desc:'コーデ・着回し',feat:'着回し力高い・上品・シンプル',point:'これ1枚あると朝の準備が格段に楽になった',target:'おしゃれしたいけど時間がない人',htags:'#楽天ROOM #楽天購入品 #ファッション #コーデ #大人カジュアル'},
-  {id:'kitchen',icon:'🍳',name:'キッチン',desc:'調理器具・食器',feat:'時短・洗いやすい・コンパクト',point:'洗い物が減って料理のハードルが下がった',target:'料理の時短をしたい人',htags:'#楽天ROOM #楽天購入品 #キッチングッズ #料理 #時短'},
-  {id:'health',icon:'💊',name:'健康・サプリ',desc:'サプリ・フィットネス',feat:'続けやすい・手軽・効果を実感',point:'思ったより無理なく続けられた',target:'健康習慣を始めたい人',htags:'#楽天ROOM #楽天購入品 #健康 #サプリ #ダイエット'},
-  {id:'oshi',icon:'🎤',name:'推し活・遠征',desc:'ライブ・グッズ',feat:'軽量・コンパクト・遠征で活躍',point:'遠征がもっと楽しくなった',target:'推し活・遠征を楽しんでいる人',htags:'#楽天ROOM #楽天購入品 #推し活 #遠征 #ライブ #オタ活'},
-  {id:'nail',icon:'💅',name:'ネイル',desc:'ネイル・ハンドケア',feat:'発色よし・長持ち・コスパ最高',point:'セルフネイルのクオリティが格段に上がった',target:'セルフネイル派',htags:'#楽天ROOM #楽天購入品 #ネイル #セルフネイル #ネイルデザイン'},
-  {id:'travel',icon:'✈️',name:'旅行グッズ',desc:'トラベル・パッキング',feat:'軽量・多機能・コンパクト',point:'荷物がコンパクトにまとまって旅のストレスが激減した',target:'旅行好き',htags:'#楽天ROOM #楽天購入品 #旅行 #旅行グッズ #国内旅行'},
-  {id:'other',icon:'📦',name:'その他',desc:'上記以外',feat:'',point:'',target:'',htags:'#楽天ROOM #楽天購入品'}
+  {id:'uv',icon:'\u2600\ufe0f',name:'UV\u30fb\u65e5\u5098',desc:'\u906e\u5149\u30fb\u65e5\u713c\u3051\u5bfe\u7b56',feat:'\u5b8c\u5168\u906e\u5149100%\u30fb\u8efd\u91cf\u30fb\u6298\u308a\u305f\u305f\u307f\u53ef',point:'\u5916\u56de\u308a\u304c\u591a\u3044\u65e5\u3067\u3082\u5915\u65b9\u307e\u3067\u5168\u7136\u713c\u3051\u306a\u304f\u3066\u611f\u52d5\u3057\u305f',target:'\u73fe\u5834\u5973\u5b50\u30fb\u5916\u4ed5\u4e8b\u306e\u4eba\u30fb\u65e5\u5098\u30c7\u30d3\u30e5\u30fc\u3057\u305f\u3044\u4eba',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #UV\u5bfe\u7b56 #\u65e5\u713c\u3051\u5bfe\u7b56 #\u73fe\u5834\u5973\u5b50 #\u65e5\u5098 #UV\u30b1\u30a2'},
+  {id:'cosme',icon:'\u1f484',name:'\u30b3\u30b9\u30e1\u30fb\u7f8e\u5bb9',desc:'\u30b9\u30ad\u30f3\u30b1\u30a2\u30fb\u30e1\u30a4\u30af',feat:'\u808c\u306a\u3058\u307f\u304c\u826f\u3044\u30fb\u4f4e\u523a\u6fc0\u30fb\u30d7\u30c1\u30d7\u30e9',point:'\u4f7f\u3044\u59cb\u3081\u3066\u304b\u3089\u671d\u306e\u808c\u306e\u8abf\u5b50\u304c\u660e\u3089\u304b\u306b\u5909\u308f\u3063\u305f',target:'\u808c\u8352\u308c\u304c\u6c17\u306b\u306a\u308b\u4eba',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u30b9\u30ad\u30f3\u30b1\u30a2 #\u30b3\u30b9\u30e1 #\u7f8e\u5bb9 #\u30d7\u30c1\u30d7\u30e9\u30b3\u30b9\u30e1'},
+  {id:'storage',icon:'\u1f5c2',name:'\u53ce\u7d0d\u30fb\u6574\u7406',desc:'\u30d0\u30c3\u30b0\u30fb\u90e8\u5c4b\u306e\u6574\u7406',feat:'\u4ed5\u5207\u308a\u591a\u3081\u30fb\u8efd\u91cf\u30fb\u30b3\u30f3\u30d1\u30af\u30c8',point:'\u30ab\u30d0\u30f3\u306e\u4e2d\u304c\u6574\u7406\u3055\u308c\u3066\u304b\u3089\u6bce\u65e5\u306e\u30b9\u30c8\u30ec\u30b9\u304c\u6fc0\u6e1b\u3057\u305f',target:'\u8377\u7269\u304c\u591a\u3044\u4eba',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u53ce\u7d0d #\u30d0\u30c3\u30b0\u6574\u7406 #\u30b9\u30c3\u30ad\u30ea\u66ae\u3089\u3057'},
+  {id:'fashion',icon:'\u1f457',name:'\u30d5\u30a1\u30c3\u30b7\u30e7\u30f3',desc:'\u30b3\u30fc\u30c7\u30fb\u7740\u56de\u3057',feat:'\u7740\u56de\u3057\u529b\u9ad8\u3044\u30fb\u4e0a\u54c1\u30fb\u30b7\u30f3\u30d7\u30eb',point:'\u3053\u308c1\u679a\u3042\u308b\u3068\u671d\u306e\u6e96\u5099\u304c\u683c\u6bb5\u306b\u697d\u306b\u306a\u3063\u305f',target:'\u304a\u3057\u3083\u308c\u3057\u305f\u3044\u3051\u3069\u6642\u9593\u304c\u306a\u3044\u4eba',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u30d5\u30a1\u30c3\u30b7\u30e7\u30f3 #\u30b3\u30fc\u30c7 #\u5927\u4eba\u30ab\u30b8\u30e5\u30a2\u30eb'},
+  {id:'kitchen',icon:'\u1f373',name:'\u30ad\u30c3\u30c1\u30f3',desc:'\u8abf\u7406\u5668\u5177\u30fb\u98df\u5668',feat:'\u6642\u77ed\u30fb\u6d17\u3044\u3084\u3059\u3044\u30fb\u30b3\u30f3\u30d1\u30af\u30c8',point:'\u6d17\u3044\u7269\u304c\u6e1b\u3063\u3066\u6599\u7406\u306e\u30cf\u30fc\u30c9\u30eb\u304c\u4e0b\u304c\u3063\u305f',target:'\u6599\u7406\u306e\u6642\u77ed\u3092\u3057\u305f\u3044\u4eba',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u30ad\u30c3\u30c1\u30f3\u30b0\u30c3\u30ba #\u6599\u7406 #\u6642\u77ed'},
+  {id:'health',icon:'\u1f48a',name:'\u5065\u5eb7\u30fb\u30b5\u30d7\u30ea',desc:'\u30b5\u30d7\u30ea\u30fb\u30d5\u30a3\u30c3\u30c8\u30cd\u30b9',feat:'\u7d9a\u3051\u3084\u3059\u3044\u30fb\u624b\u8efd\u30fb\u52b9\u679c\u3092\u5b9f\u611f',point:'\u601d\u3063\u305f\u3088\u308a\u7121\u7406\u306a\u304f\u7d9a\u3051\u3089\u308c\u305f',target:'\u5065\u5eb7\u7fd2\u6163\u3092\u59cb\u3081\u305f\u3044\u4eba',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u5065\u5eb7 #\u30b5\u30d7\u30ea #\u30c0\u30a4\u30a8\u30c3\u30c8'},
+  {id:'oshi',icon:'\u1f3a4',name:'\u63a8\u3057\u6d3b\u30fb\u9060\u5f81',desc:'\u30e9\u30a4\u30d6\u30fb\u30b0\u30c3\u30ba',feat:'\u8efd\u91cf\u30fb\u30b3\u30f3\u30d1\u30af\u30c8\u30fb\u9060\u5f81\u3067\u6d3b\u8e8d',point:'\u9060\u5f81\u304c\u3082\u3063\u3068\u697d\u3057\u304f\u306a\u3063\u305f',target:'\u63a8\u3057\u6d3b\u30fb\u9060\u5f81\u3092\u697d\u3057\u3093\u3067\u3044\u308b\u4eba',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u63a8\u3057\u6d3b #\u9060\u5f81 #\u30e9\u30a4\u30d6 #\u30aa\u30bf\u6d3b'},
+  {id:'nail',icon:'\u1f485',name:'\u30cd\u30a4\u30eb',desc:'\u30cd\u30a4\u30eb\u30fb\u30cf\u30f3\u30c9\u30b1\u30a2',feat:'\u767a\u8272\u3088\u3057\u30fb\u9577\u6301\u3061\u30fb\u30b3\u30b9\u30d1\u6700\u9ad8',point:'\u30bb\u30eb\u30d5\u30cd\u30a4\u30eb\u306e\u30af\u30aa\u30ea\u30c6\u30a3\u304c\u683c\u6bb5\u306b\u4e0a\u304c\u3063\u305f',target:'\u30bb\u30eb\u30d5\u30cd\u30a4\u30eb\u6d3e',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u30cd\u30a4\u30eb #\u30bb\u30eb\u30d5\u30cd\u30a4\u30eb #\u30cd\u30a4\u30eb\u30c7\u30b6\u30a4\u30f3'},
+  {id:'travel',icon:'\u2708\ufe0f',name:'\u65c5\u884c\u30b0\u30c3\u30ba',desc:'\u30c8\u30e9\u30d9\u30eb\u30fb\u30d1\u30c3\u30ad\u30f3\u30b0',feat:'\u8efd\u91cf\u30fb\u591a\u6a5f\u80fd\u30fb\u30b3\u30f3\u30d1\u30af\u30c8',point:'\u8377\u7269\u304c\u30b3\u30f3\u30d1\u30af\u30c8\u306b\u307e\u3068\u307e\u3063\u3066\u65c5\u306e\u30b9\u30c8\u30ec\u30b9\u304c\u6fc0\u6e1b\u3057\u305f',target:'\u65c5\u884c\u597d\u304d',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u65c5\u884c #\u65c5\u884c\u30b0\u30c3\u30ba #\u56fd\u5185\u65c5\u884c'},
+  {id:'other',icon:'\u1f4e6',name:'\u305d\u306e\u4ed6',desc:'\u4e0a\u8a18\u4ee5\u5916',feat:'',point:'',target:'',htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1'}
 ];
 
 var DICT=[
-  {keys:['uv','日傘','紫外線','遮光'],htags:'#楽天ROOM #楽天購入品 #UV対策 #日焼け対策 #現場女子',target:'現場女子・外仕事の人',before:'通勤だけで腕が真っ赤に焼けてた',after:'夕方まで全然焼けなくてマジで感動。これなしで外出れない'},
-  {keys:['コスメ','スキンケア','美容','化粧'],htags:'#楽天ROOM #楽天購入品 #スキンケア #コスメ #美容',target:'肌荒れが気になる人',before:'べたつきや乾燥が気になってた',after:'朝の肌の調子が明らかに変わった。続けるだけでいいのが最高'},
-  {keys:['収納','整理','ポーチ','仕切り'],htags:'#楽天ROOM #楽天購入品 #収納 #バッグ整理 #スッキリ暮らし',target:'荷物が多い人',before:'カバンの中で物が迷子になってた',after:'必要なものがすぐ取り出せるようになった。地味だけど毎日ストレスが消えた'},
-  {keys:['ネイル','nail'],htags:'#楽天ROOM #楽天購入品 #ネイル #セルフネイル',target:'セルフネイル派',before:'セルフネイルがうまくいかなくて悩んでた',after:'仕上がりが全然違う。サロン行かなくていいじゃんってなった'},
-  {keys:['推し','遠征','ライブ','グッズ'],htags:'#楽天ROOM #楽天購入品 #推し活 #遠征 #ライブ #オタ活',target:'推し活・遠征を楽しんでいる人',before:'遠征の荷物が多くてパンパンになってた',after:'遠征がもっと楽しくなった。これがあるだけで心強い'},
-  {keys:['旅行','トラベル'],htags:'#楽天ROOM #楽天購入品 #旅行 #旅行グッズ #国内旅行',target:'旅行好き',before:'パッキングが毎回大変だった',after:'荷物がコンパクトにまとまって旅のストレスが激減した'}
+  {keys:['uv','\u65e5\u5098','\u7d2b\u5916\u7dda','\u906e\u5149'],htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #UV\u5bfe\u7b56 #\u65e5\u713c\u3051\u5bfe\u7b56 #\u73fe\u5834\u5973\u5b50',target:'\u73fe\u5834\u5973\u5b50\u30fb\u5916\u4ed5\u4e8b\u306e\u4eba',before:'\u901a\u52e4\u3060\u3051\u3067\u8155\u304c\u771f\u3063\u8d64\u306b\u713c\u3051\u3066\u305f',after:'\u5915\u65b9\u307e\u3067\u5168\u7136\u713c\u3051\u306a\u304f\u3066\u30de\u30b8\u3067\u611f\u52d5\u3002\u3053\u308c\u306a\u3057\u3067\u5916\u51fa\u308c\u306a\u3044'},
+  {keys:['\u30b3\u30b9\u30e1','\u30b9\u30ad\u30f3\u30b1\u30a2','\u7f8e\u5bb9','\u5316\u7ca7'],htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u30b9\u30ad\u30f3\u30b1\u30a2 #\u30b3\u30b9\u30e1 #\u7f8e\u5bb9',target:'\u808c\u8352\u308c\u304c\u6c17\u306b\u306a\u308b\u4eba',before:'\u3079\u305f\u3064\u304d\u3084\u4e7e\u71e5\u304c\u6c17\u306b\u306a\u3063\u3066\u305f',after:'\u671d\u306e\u808c\u306e\u8abf\u5b50\u304c\u660e\u3089\u304b\u306b\u5909\u308f\u3063\u305f\u3002\u7d9a\u3051\u308b\u3060\u3051\u3067\u3044\u3044\u306e\u304c\u6700\u9ad8'},
+  {keys:['\u53ce\u7d0d','\u6574\u7406','\u30dd\u30fc\u30c1','\u4ed5\u5207\u308a'],htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u53ce\u7d0d #\u30d0\u30c3\u30b0\u6574\u7406 #\u30b9\u30c3\u30ad\u30ea\u66ae\u3089\u3057',target:'\u8377\u7269\u304c\u591a\u3044\u4eba',before:'\u30ab\u30d0\u30f3\u306e\u4e2d\u3067\u7269\u304c\u8ff7\u5b50\u306b\u306a\u3063\u3066\u305f',after:'\u5fc5\u8981\u306a\u3082\u306e\u304c\u3059\u3050\u53d6\u308a\u51fa\u305b\u308b\u3088\u3046\u306b\u306a\u3063\u305f\u3002\u5730\u5473\u3060\u3051\u3069\u6bce\u65e5\u30b9\u30c8\u30ec\u30b9\u304c\u6d88\u3048\u305f'},
+  {keys:['\u30cd\u30a4\u30eb','nail'],htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u30cd\u30a4\u30eb #\u30bb\u30eb\u30d5\u30cd\u30a4\u30eb',target:'\u30bb\u30eb\u30d5\u30cd\u30a4\u30eb\u6d3e',before:'\u30bb\u30eb\u30d5\u30cd\u30a4\u30eb\u304c\u3046\u307e\u304f\u3044\u304b\u306a\u304f\u3066\u60a9\u3093\u3067\u305f',after:'\u4ed5\u4e0a\u304c\u308a\u304c\u5168\u7136\u9055\u3046\u3002\u30b5\u30ed\u30f3\u884c\u304b\u306a\u304f\u3066\u3044\u3044\u3058\u3083\u3093\u3063\u3066\u306a\u3063\u305f'},
+  {keys:['\u63a8\u3057','\u9060\u5f81','\u30e9\u30a4\u30d6','\u30b0\u30c3\u30ba'],htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u63a8\u3057\u6d3b #\u9060\u5f81 #\u30e9\u30a4\u30d6 #\u30aa\u30bf\u6d3b',target:'\u63a8\u3057\u6d3b\u30fb\u9060\u5f81\u3092\u697d\u3057\u3093\u3067\u3044\u308b\u4eba',before:'\u9060\u5f81\u306e\u8377\u7269\u304c\u591a\u304f\u3066\u30d1\u30f3\u30d1\u30f3\u306b\u306a\u3063\u3066\u305f',after:'\u9060\u5f81\u304c\u3082\u3063\u3068\u697d\u3057\u304f\u306a\u3063\u305f\u3002\u3053\u308c\u304c\u3042\u308b\u3060\u3051\u3067\u5fc3\u5f37\u3044'},
+  {keys:['\u65c5\u884c','\u30c8\u30e9\u30d9\u30eb'],htags:'#\u697d\u5929ROOM #\u697d\u5929\u8cfc\u5165\u54c1 #\u65c5\u884c #\u65c5\u884c\u30b0\u30c3\u30ba #\u56fd\u5185\u65c5\u884c',target:'\u65c5\u884c\u597d\u304d',before:'\u30d1\u30c3\u30ad\u30f3\u30b0\u304c\u6bce\u56de\u5927\u5909\u3060\u3063\u305f',after:'\u8377\u7269\u304c\u30b3\u30f3\u30d1\u30af\u30c8\u306b\u307e\u3068\u307e\u3063\u3066\u65c5\u306e\u30b9\u30c8\u30ec\u30b9\u304c\u6fc0\u6e1b\u3057\u305f'}
 ];
 
 function suggest(cat){
@@ -415,10 +415,10 @@ function suggest(cat){
   return null;
 }
 
-/* ── 楽天ROOMテキスト解析 ── */
+/* \u2500\u2500 \u697d\u5929ROOM\u30c6\u30ad\u30b9\u30c8\u89e3\u6790 \u2500\u2500 */
 window.parseRoom=function(){
   var text=document.getElementById('rpaste').value.trim();
-  if(!text){toast('テキストを貼り付けてください');return;}
+  if(!text){toast('\u30c6\u30ad\u30b9\u30c8\u3092\u8cbc\u308a\u4ed8\u3051\u3066\u304f\u3060\u3055\u3044');return;}
   var lines=text.split('
 ').map(function(l){return l.trim();}).filter(Boolean);
   var name='',price='',url='';
@@ -433,13 +433,13 @@ window.parseRoom=function(){
   if(url)document.getElementById('rurl').value=url;
   if(name||price){
     document.getElementById('rprev').style.display='block';
-    document.getElementById('rprev-name').textContent=name||'（取得できませんでした）';
+    document.getElementById('rprev-name').textContent=name||'\uff08\u53d6\u5f97\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\uff09';
     document.getElementById('rprev-price').textContent=price?'\u00a5'+Number(price).toLocaleString('ja-JP'):'';
-    toast('自動入力しました！内容を確認してください');
-  }else{toast('読み取れませんでした。手入力してください');}
+    toast('\u81ea\u52d5\u5165\u529b\u3057\u307e\u3057\u305f\uff01\u5185\u5bb9\u3092\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044');
+  }else{toast('\u8aad\u307f\u53d6\u308c\u307e\u305b\u3093\u3067\u3057\u305f\u3002\u624b\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');}
 }
 
-/* ── 登録ステップ ── */
+/* \u2500\u2500 \u767b\u9332\u30b9\u30c6\u30c3\u30d7 \u2500\u2500 */
 var selCat=null,editId=null;
 
 function buildCatGrid(){
@@ -467,12 +467,12 @@ function showStep(n){
 }
 
 window.next1=function(){
-  if(!gv('rname')||!gv('rprice')){toast('商品名と価格を入力してください');return;}
+  if(!gv('rname')||!gv('rprice')){toast('\u5546\u54c1\u540d\u3068\u4fa1\u683c\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}
   buildCatGrid();showStep(2);
 };
 window.next2=function(){
   var cu=gv('rcatcustom');
-  if(!selCat&&!cu){toast('カテゴリを選ぶか直接入力してください');return;}
+  if(!selCat&&!cu){toast('\u30ab\u30c6\u30b4\u30ea\u3092\u9078\u3076\u304b\u76f4\u63a5\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}
   var cat=selCat?CATS.filter(function(c){return c.id===selCat;})[0]:null;
   setv('rcat',cat?cat.name:cu);
   setv('rfeat',cat?cat.feat:'');
@@ -485,7 +485,7 @@ window.back=function(n){showStep(n);};
 
 window.saveProd=function(){
   var name=gv('rname'),price=gv('rprice');
-  if(!name||!price){toast('商品名と価格は必須です');return;}
+  if(!name||!price){toast('\u5546\u54c1\u540d\u3068\u4fa1\u683c\u306f\u5fc5\u9808\u3067\u3059');return;}
   var list=load();
   var data={name:name,url:gv('rurl'),imgUrl:gv('rimg'),price:Number(price),
     category:gv('rcat'),feature:gv('rfeat'),point:gv('rpoint'),
@@ -494,11 +494,11 @@ window.saveProd=function(){
   if(editId){
     var idx=-1;list.forEach(function(p,i){if(p.id===editId)idx=i;});
     if(idx!==-1)list[idx]=Object.assign({},list[idx],data);
-    editId=null;document.getElementById('nb-add-i').textContent='➕';
-    toast('更新しました');
+    editId=null;document.getElementById('nb-add-i').textContent='\u2795';
+    toast('\u66f4\u65b0\u3057\u307e\u3057\u305f');
   }else{
     data.id=Date.now().toString();list.unshift(data);
-    toast('保存しました（'+list.length+'件）');
+    toast('\u4fdd\u5b58\u3057\u307e\u3057\u305f\uff08'+list.length+'\u4ef6\uff09');
   }
   if(save(list)){updateSS();clearReg();switchSc('note');}
 };
@@ -518,14 +518,14 @@ window.editProd=function(id){
   setv('rtarget',p.target);setv('rhtags',p.hashtags);
   setv('rfirst',p.firstPost);setv('rnext',p.nextPost);
   selCat=null;CATS.forEach(function(c){if(c.name===p.category)selCat=c.id;});
-  document.getElementById('nb-add-i').textContent='✏️';
+  document.getElementById('nb-add-i').textContent='\u270f\ufe0f';
   switchSc('add');showStep(3);
 };
 
 window.delProd=function(id){
-  if(!confirm('この商品を削除しますか？'))return;
+  if(!confirm('\u3053\u306e\u5546\u54c1\u3092\u524a\u9664\u3057\u307e\u3059\u304b\uff1f'))return;
   save(load().filter(function(p){return p.id!==id;}));
-  updateSS();renderList();toast('削除しました');
+  updateSS();renderList();toast('\u524a\u9664\u3057\u307e\u3057\u305f');
 };
 
 window.markPosted=function(id){
@@ -537,48 +537,48 @@ window.markPosted=function(id){
       p.nextPost=d.toISOString().slice(0,10);
     }
   });
-  save(list);renderList();toast('投稿済みにしました（次回：30日後）');
+  save(list);renderList();toast('\u6295\u7a3f\u6e08\u307f\u306b\u3057\u307e\u3057\u305f\uff08\u6b21\u56de\uff1a30\u65e5\u5f8c\uff09');
 };
 
-/* ── 商品一覧 ── */
-var activeF='すべて';
+/* \u2500\u2500 \u5546\u54c1\u4e00\u89a7 \u2500\u2500 */
+var activeF='\u3059\u3079\u3066';
 function renderList(){
   var list=load();
   var q=document.getElementById('nsearch').value.trim().toLowerCase();
-  var cats=['すべて'];
+  var cats=['\u3059\u3079\u3066'];
   list.forEach(function(p){if(p.category&&cats.indexOf(p.category)===-1)cats.push(p.category);});
   document.getElementById('frow').innerHTML=cats.map(function(c){
     return '<button class="fchip'+(c===activeF?' on':'')+'" onclick="setF(''+escA(c)+'')">'+escH(c)+'</button>';
   }).join('');
   var filtered=list;
-  if(activeF!=='すべて')filtered=filtered.filter(function(p){return p.category===activeF;});
+  if(activeF!=='\u3059\u3079\u3066')filtered=filtered.filter(function(p){return p.category===activeF;});
   if(q)filtered=filtered.filter(function(p){
     return(p.name||'').toLowerCase().indexOf(q)!==-1||(p.feature||'').toLowerCase().indexOf(q)!==-1;
   });
   var area=document.getElementById('parea');
   if(!filtered.length){
-    area.innerHTML='<div class="empty"><div class="ei">'+(list.length?'🔍':'📭')+'</div><p>'+(list.length?'該当なし':'商品がまだ登録されていません<br>「商品登録」タブから追加してください')+'</p></div>';
+    area.innerHTML='<div class="empty"><div class="ei">'+(list.length?'\u1f50d':'\u1f4ed')+'</div><p>'+(list.length?'\u8a72\u5f53\u306a\u3057':'\u5546\u54c1\u304c\u307e\u3060\u767b\u9332\u3055\u308c\u3066\u3044\u307e\u305b\u3093<br>\u300c\u5546\u54c1\u767b\u9332\u300d\u30bf\u30d6\u304b\u3089\u8ffd\u52a0\u3057\u3066\u304f\u3060\u3055\u3044')+'</p></div>';
     return;
   }
   area.innerHTML='<div class="plist">'+filtered.map(function(p){
     var badge=p.category?'<span class="cbadge">'+escH(p.category)+'</span>':'';
     var today=new Date().toISOString().slice(0,10);
-    var rpb=p.nextPost?(p.nextPost<=today?'<span class="rpbadge due">📅 投稿時期!</span>':'<span class="rpbadge ok">📅 '+p.nextPost+'</span>'):'';
+    var rpb=p.nextPost?(p.nextPost<=today?'<span class="rpbadge due">\u1f4c5 \u6295\u7a3f\u6642\u671f!</span>':'<span class="rpbadge ok">\u1f4c5 '+p.nextPost+'</span>'):'';
     return '<div class="pitem">'
       +'<div class="pname">'+escH(p.name)+rpb+'</div>'
       +'<div class="pmeta">'+badge+'\u00a5'+Number(p.price).toLocaleString('ja-JP')+(p.feature?' | '+escH(p.feature):'')+'</div>'
       +(p.point?'<div class="ppoint">'+escH(p.point)+'</div>':'')
       +'<div class="pactions">'
-      +'<button class="bsm green" onclick="useProd(''+p.id+'')">✍️ 投稿文</button>'
-      +'<button class="bsm orange" onclick="markPosted(''+p.id+'')">✅ 投稿済み</button>'
-      +'<button class="bsm blue" onclick="editProd(''+p.id+'')">編集</button>'
-      +'<button class="bsm red" onclick="delProd(''+p.id+'')">削除</button>'
+      +'<button class="bsm green" onclick="useProd(''+p.id+'')">\u270d\ufe0f \u6295\u7a3f\u6587</button>'
+      +'<button class="bsm orange" onclick="markPosted(''+p.id+'')">\u2705 \u6295\u7a3f\u6e08\u307f</button>'
+      +'<button class="bsm blue" onclick="editProd(''+p.id+'')">\u7de8\u96c6</button>'
+      +'<button class="bsm red" onclick="delProd(''+p.id+'')">\u524a\u9664</button>'
       +'</div></div>';
   }).join('')+'</div>';
 }
 window.setF=function(c){activeF=c;renderList();};
 
-/* ── 商品→投稿フォーム ── */
+/* \u2500\u2500 \u5546\u54c1\u2192\u6295\u7a3f\u30d5\u30a9\u30fc\u30e0 \u2500\u2500 */
 window.useProd=function(id){
   var p=load().filter(function(x){return x.id===id;})[0];if(!p)return;
   var s=suggest(p.category);
@@ -591,7 +591,7 @@ window.useProd=function(id){
   document.getElementById('selname').textContent=p.name;
   document.getElementById('selban').classList.add('on');
   switchSub('item');switchSc('post');window.scrollTo(0,0);
-  toast(p.name+' を読み込みました');
+  toast(p.name+' \u3092\u8aad\u307f\u8fbc\u307f\u307e\u3057\u305f');
 };
 window.clearSel=function(){document.getElementById('selban').classList.remove('on');};
 
@@ -605,86 +605,86 @@ function switchSub(mode){
 window.switchSub=switchSub;
 window.toggleChip=function(el){el.classList.toggle('on');};
 
-/* ── 投稿文生成（商品） ── */
+/* \u2500\u2500 \u6295\u7a3f\u6587\u751f\u6210\uff08\u5546\u54c1\uff09 \u2500\u2500 */
 window.genItem=function(){
   var name=gv('pname'),price=gv('pprice'),before=gv('pbefore'),after=gv('pafter');
   var fav=gv('pfav'),target=gv('ptarget'),htags=gv('phtags'),url=gv('purl');
   var scenes=chips('schips');
-  if(!name||!price||!before||!after){toast('必須項目を入力してください');return;}
+  if(!name||!price||!before||!after){toast('\u5fc5\u9808\u9805\u76ee\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}
   var urlLine=url?'
 
 '+url:'';
-  // 楽天ROOM
-  var r='【'+name+'】\u00a5'+fmt(price)+'
+  // \u697d\u5929ROOM
+  var r='\u3010'+name+'\u3011\u00a5'+fmt(price)+'
 
-'+(scenes.join('・')||'日常')+'で実際に使ってみました。
+'+(scenes.join('\u30fb')||'\u65e5\u5e38')+'\u3067\u5b9f\u969b\u306b\u4f7f\u3063\u3066\u307f\u307e\u3057\u305f\u3002
 
 '
-    +before+'という状況だったのが、'+after
+    +before+'\u3068\u3044\u3046\u72b6\u6cc1\u3060\u3063\u305f\u306e\u304c\u3001'+after
     +(fav?'
-✔ '+fav:'')
+\u2714 '+fav:'')
     +(target?'
 
-「'+target+'」に特におすすめ。':'')
+\u300c'+target+'\u300d\u306b\u7279\u306b\u304a\u3059\u3059\u3081\u3002':'')
     +urlLine+'
 
 '+htags;
   // Threads
   var n=Math.floor(Math.random()*3),t='';
-  if(n===0)t=before+'って悩んでたんだけど、
-'+name+' 買ってから変わった。
+  if(n===0)t=before+'\u3063\u3066\u60a9\u3093\u3067\u305f\u3093\u3060\u3051\u3069\u3001
+'+name+' \u8cb7\u3063\u3066\u304b\u3089\u5909\u308f\u3063\u305f\u3002
 
 '+after+(fav?'
 
-とくに「'+fav+'」のが地味にうれしい。':'')+(target?'
-'+target+'にはマジでおすすめ。':'')+'
+\u3068\u304f\u306b\u300c'+fav+'\u300d\u306e\u304c\u5730\u5473\u306b\u3046\u308c\u3057\u3044\u3002':'')+(target?'
+'+target+'\u306b\u306f\u30de\u30b8\u3067\u304a\u3059\u3059\u3081\u3002':'')+'
 
 \u00a5'+fmt(price)+urlLine+'
 
 '+htags;
-  else if(n===1)t='正直、'+before+'って思ってた。
-でも'+name+'使ってから
+  else if(n===1)t='\u6b63\u76f4\u3001'+before+'\u3063\u3066\u601d\u3063\u3066\u305f\u3002
+\u3067\u3082'+name+'\u4f7f\u3063\u3066\u304b\u3089
 
 '+after+(fav?'
 
-「'+fav+'」これが最高すぎた。':'')+'
+\u300c'+fav+'\u300d\u3053\u308c\u304c\u6700\u9ad8\u3059\u304e\u305f\u3002':'')+'
 
 \u00a5'+fmt(price)+urlLine+'
 
 '+htags;
-  else t='【買ってよかった】
+  else t='\u3010\u8cb7\u3063\u3066\u3088\u304b\u3063\u305f\u3011
 '+name+'
 
-'+before+'のが
+'+before+'\u306e\u304c
 '+after+(fav?'
 
-特に'+fav+'のが◎':'')+'
+\u7279\u306b'+fav+'\u306e\u304c\u25ce':'')+'
 
 \u00a5'+fmt(price)+urlLine+'
 
 '+htags;
   // X
-  var xs=after.length>30?after.slice(0,30)+'…':after;
-  var x=before+'→'+name+'で解決
+  var xs=after.length>30?after.slice(0,30)+'\u2026':after;
+  var x=before+'\u2192'+name+'\u3067\u89e3\u6c7a
 
 '+xs+'
 
 \u00a5'+fmt(price)+(url?' '+url:'')+'
 '+htags.split(' ').slice(0,3).join(' ');
   // Instagram
-  var ig='✨ '+name+'
+  var ig='\u2728 '+name+'
 
-'+before+'って感じだったんだけど、
-使い始めてから'+after+(fav?'
+'+before+'\u3063\u3066\u611f\u3058\u3060\u3063\u305f\u3093\u3060\u3051\u3069\u3001
+\u4f7f\u3044\u59cb\u3081\u3066\u304b\u3089'+after+(fav?'
 
-特に好きなのが「'+fav+'」のところ💕':'')
+\u7279\u306b\u597d\u304d\u306a\u306e\u304c\u300c'+fav+'\u300d\u306e\u3068\u3053\u308d\u1f495':'')
     +'
 
-フォロワーさんにも絶対おすすめしたくて紹介✨'
+\u30d5\u30a9\u30ed\u30ef\u30fc\u3055\u3093\u306b\u3082\u7d76\u5bfe\u304a\u3059\u3059\u3081\u3057\u305f\u304f\u3066\u7d39\u4ecb\u2728'
     +'
 \u00a5'+fmt(price)+(url?'
 
-リンクはストーリーかプロフのリンクから👆':'')
+\u30ea\u30f3\u30af\u306f\u30b9\u30c8\u30fc\u30ea\u30fc\u304b\u30d7\u30ed\u30d5\u306e\u30ea\u30f3\u30af\u304b\u3089\u1f446':'')
     +'
 
 '+htags;
@@ -693,111 +693,111 @@ window.genItem=function(){
   showBlock('item-results');
 };
 
-/* ── 投稿文生成（ホテル） ── */
+/* \u2500\u2500 \u6295\u7a3f\u6587\u751f\u6210\uff08\u30db\u30c6\u30eb\uff09 \u2500\u2500 */
 window.genHotel=function(){
   var name=gv('hname'),area=gv('harea'),price=gv('hprice'),point=gv('hpoint');
-  if(!name||!area||!price||!point){toast('必須項目を入力してください');return;}
+  if(!name||!area||!price||!point){toast('\u5fc5\u9808\u9805\u76ee\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044');return;}
   var exp=gv('hexp'),weak=gv('hweak'),htags=gv('hhtags'),who=chips('hchips');
-  var wS=who.length?who.join('・')+'にぴったり。':'';
+  var wS=who.length?who.join('\u30fb')+'\u306b\u3074\u3063\u305f\u308a\u3002':'';
   var eL=exp?'
 
 '+exp:'';var wL=weak?'
 
-ちょっと気になった点：'+weak:'';
+\u3061\u3087\u3063\u3068\u6c17\u306b\u306a\u3063\u305f\u70b9\uff1a'+weak:'';
   var n=Math.floor(Math.random()*3),t='';
-  if(n===0)t='【泊まってよかったホテル】
-'+name+'（'+area+'）
+  if(n===0)t='\u3010\u6cca\u307e\u3063\u3066\u3088\u304b\u3063\u305f\u30db\u30c6\u30eb\u3011
+'+name+'\uff08'+area+'\uff09
 
 '+point+eL+wL+'
 
-料金：'+price+'
+\u6599\u91d1\uff1a'+price+'
 '+wS+'
 
 '+htags;
-  else if(n===1)t=area+'で泊まった'+name+'、最高だった。
+  else if(n===1)t=area+'\u3067\u6cca\u307e\u3063\u305f'+name+'\u3001\u6700\u9ad8\u3060\u3063\u305f\u3002
 
 '+point+eL+'
 '+wS+wL+'
 
 '+price+' / '+htags;
-  else t='正直このホテルはリピートしたい。
+  else t='\u6b63\u76f4\u3053\u306e\u30db\u30c6\u30eb\u306f\u30ea\u30d4\u30fc\u30c8\u3057\u305f\u3044\u3002
 
-'+name+'（'+area+'）
+'+name+'\uff08'+area+'\uff09
 '+point+eL+wL+'
 
-料金：'+price+'
+\u6599\u91d1\uff1a'+price+'
 '+htags;
-  var ig='🏨 '+name+'
-📍 '+area+'
-💴 '+price+'
+  var ig='\u1f3e8 '+name+'
+\u1f4cd '+area+'
+\u1f4b4 '+price+'
 
-✦ '+point+eL+(weak?'
+\u2726 '+point+eL+(weak?'
 
-気になった点：'+weak:'')+(who.length?'
+\u6c17\u306b\u306a\u3063\u305f\u70b9\uff1a'+weak:'')+(who.length?'
 
-✦ '+who.join(' / ')+' におすすめ':'')+'
+\u2726 '+who.join(' / ')+' \u306b\u304a\u3059\u3059\u3081':'')+'
 
 '+htags;
-  var s=name+(who.length?'（'+who.join('・')+'向け）':'')+'｜'+area+'｜'+price+'｜'+point;
+  var s=name+(who.length?'\uff08'+who.join('\u30fb')+'\u5411\u3051\uff09':'')+'\uff5c'+area+'\uff5c'+price+'\uff5c'+point;
   setTxt('httxt','htc',t.trim());setTxt('hitxt','hic',ig.trim());setTxt('hstxt','hsc',s.trim());
   showBlock('hotel-results');
 };
 
-/* ── 再投稿管理 ── */
+/* \u2500\u2500 \u518d\u6295\u7a3f\u7ba1\u7406 \u2500\u2500 */
 function renderRP(){
   var list=load().filter(function(p){return p.firstPost||p.nextPost;});
   list.sort(function(a,b){return(a.nextPost||'9999')>(b.nextPost||'9999')?1:-1;});
   var area=document.getElementById('rparea');
-  if(!list.length){area.innerHTML='<div class="empty"><div class="ei">📅</div><p>投稿日を登録した商品がありません<br>商品登録時に「初回投稿日」を設定してください</p></div>';return;}
+  if(!list.length){area.innerHTML='<div class="empty"><div class="ei">\u1f4c5</div><p>\u6295\u7a3f\u65e5\u3092\u767b\u9332\u3057\u305f\u5546\u54c1\u304c\u3042\u308a\u307e\u305b\u3093<br>\u5546\u54c1\u767b\u9332\u6642\u306b\u300c\u521d\u56de\u6295\u7a3f\u65e5\u300d\u3092\u8a2d\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044</p></div>';return;}
   var today=new Date().toISOString().slice(0,10);
   area.innerHTML=list.map(function(p){
     var due=p.nextPost&&p.nextPost<=today;
     return '<div class="rpcard" style="border-left:4px solid '+(due?'#e65100':'#4caf50')+'">'
       +'<div class="rpname">'+escH(p.name)+'</div>'
-      +'<div class="rpdates">初回：'+(p.firstPost||'未設定')+'<br>次回：'+(p.nextPost||'未設定')+(due?' ⚠️ 投稿時期!':'')+'</div>'
+      +'<div class="rpdates">\u521d\u56de\uff1a'+(p.firstPost||'\u672a\u8a2d\u5b9a')+'<br>\u6b21\u56de\uff1a'+(p.nextPost||'\u672a\u8a2d\u5b9a')+(due?' \u26a0\ufe0f \u6295\u7a3f\u6642\u671f!':'')+'</div>'
       +'<div class="rpactions">'
-      +'<button class="bsm green" onclick="useProd(''+p.id+'')">✍️ 投稿文を作る</button>'
-      +'<button class="bsm orange" onclick="markPosted(''+p.id+'')">✅ 投稿済みにする</button>'
+      +'<button class="bsm green" onclick="useProd(''+p.id+'')">\u270d\ufe0f \u6295\u7a3f\u6587\u3092\u4f5c\u308b</button>'
+      +'<button class="bsm orange" onclick="markPosted(''+p.id+'')">\u2705 \u6295\u7a3f\u6e08\u307f\u306b\u3059\u308b</button>'
       +'</div></div>';
   }).join('');
 }
 
-/* ── データ管理 ── */
-function updateDC(){var el=document.getElementById('dcnt');if(el)el.textContent='現在 '+load().length+' 件登録されています';}
-window.expJSON=function(){var p=load();if(!p.length){toast('登録商品がありません');return;}dlBlob(JSON.stringify({version:3,exportedAt:new Date().toISOString(),products:p},null,2),'application/json','sns_'+ds()+'.json');toast('JSONをエクスポートしました');};
-window.expCSV=function(){var p=load();if(!p.length){toast('登録商品がありません');return;}var keys=['id','name','url','imgUrl','price','category','feature','point','target','hashtags','firstPost','nextPost'];var esc=function(v){return'"'+String(v||'').replace(/"/g,'""')+'"';};dlBlob('﻿'+[keys.join(',')].concat(p.map(function(r){return keys.map(function(k){return esc(r[k]);}).join(',');})).join('
-'),'text/csv','sns_'+ds()+'.csv');toast('CSVをエクスポートしました');};
-window.impFile=function(input){var file=input.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{if(file.name.slice(-5)==='.json')impJSON(e.target.result);else impCSV(e.target.result);}catch(err){showDB('err','読み込み失敗: '+err.message);}input.value='';};reader.readAsText(file,'UTF-8');};
-function impJSON(text){var data=JSON.parse(text);var inc=Array.isArray(data)?data:(data.products||[]);var ex=load();var ids={};ex.forEach(function(p){ids[p.id]=1;});var nw=inc.filter(function(p){return!ids[p.id];});save(nw.concat(ex));updateSS();updateDC();showDB('ok',nw.length+' 件をインポートしました');}
-function impCSV(text){var clean=text.replace(/^﻿/,'');var lines=clean.split('
-').filter(function(l){return l.trim();});if(lines.length<2){showDB('err','データが見つかりませんでした');return;}var hds=parseCSV(lines[0]);var inc=lines.slice(1).map(function(line){var vals=parseCSV(line),obj={};hds.forEach(function(h,i){obj[h]=vals[i]||'';});if(!obj.id)obj.id=Date.now().toString()+Math.random().toString(36).slice(2,6);if(obj.price)obj.price=Number(obj.price)||0;return obj;}).filter(function(p){return p.name;});var ex=load();var ids={};ex.forEach(function(p){ids[p.id]=1;});var nw=inc.filter(function(p){return!ids[p.id];});save(nw.concat(ex));updateSS();updateDC();showDB('ok',nw.length+' 件をインポートしました');}
+/* \u2500\u2500 \u30c7\u30fc\u30bf\u7ba1\u7406 \u2500\u2500 */
+function updateDC(){var el=document.getElementById('dcnt');if(el)el.textContent='\u73fe\u5728 '+load().length+' \u4ef6\u767b\u9332\u3055\u308c\u3066\u3044\u307e\u3059';}
+window.expJSON=function(){var p=load();if(!p.length){toast('\u767b\u9332\u5546\u54c1\u304c\u3042\u308a\u307e\u305b\u3093');return;}dlBlob(JSON.stringify({version:3,exportedAt:new Date().toISOString(),products:p},null,2),'application/json','sns_'+ds()+'.json');toast('JSON\u3092\u30a8\u30af\u30b9\u30dd\u30fc\u30c8\u3057\u307e\u3057\u305f');};
+window.expCSV=function(){var p=load();if(!p.length){toast('\u767b\u9332\u5546\u54c1\u304c\u3042\u308a\u307e\u305b\u3093');return;}var keys=['id','name','url','imgUrl','price','category','feature','point','target','hashtags','firstPost','nextPost'];var esc=function(v){return'"'+String(v||'').replace(/"/g,'""')+'"';};dlBlob('\ufeff'+[keys.join(',')].concat(p.map(function(r){return keys.map(function(k){return esc(r[k]);}).join(',');})).join('
+'),'text/csv','sns_'+ds()+'.csv');toast('CSV\u3092\u30a8\u30af\u30b9\u30dd\u30fc\u30c8\u3057\u307e\u3057\u305f');};
+window.impFile=function(input){var file=input.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{if(file.name.slice(-5)==='.json')impJSON(e.target.result);else impCSV(e.target.result);}catch(err){showDB('err','\u8aad\u307f\u8fbc\u307f\u5931\u6557: '+err.message);}input.value='';};reader.readAsText(file,'UTF-8');};
+function impJSON(text){var data=JSON.parse(text);var inc=Array.isArray(data)?data:(data.products||[]);var ex=load();var ids={};ex.forEach(function(p){ids[p.id]=1;});var nw=inc.filter(function(p){return!ids[p.id];});save(nw.concat(ex));updateSS();updateDC();showDB('ok',nw.length+' \u4ef6\u3092\u30a4\u30f3\u30dd\u30fc\u30c8\u3057\u307e\u3057\u305f');}
+function impCSV(text){var clean=text.replace(/^\ufeff/,'');var lines=clean.split('
+').filter(function(l){return l.trim();});if(lines.length<2){showDB('err','\u30c7\u30fc\u30bf\u304c\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f');return;}var hds=parseCSV(lines[0]);var inc=lines.slice(1).map(function(line){var vals=parseCSV(line),obj={};hds.forEach(function(h,i){obj[h]=vals[i]||'';});if(!obj.id)obj.id=Date.now().toString()+Math.random().toString(36).slice(2,6);if(obj.price)obj.price=Number(obj.price)||0;return obj;}).filter(function(p){return p.name;});var ex=load();var ids={};ex.forEach(function(p){ids[p.id]=1;});var nw=inc.filter(function(p){return!ids[p.id];});save(nw.concat(ex));updateSS();updateDC();showDB('ok',nw.length+' \u4ef6\u3092\u30a4\u30f3\u30dd\u30fc\u30c8\u3057\u307e\u3057\u305f');}
 function parseCSV(row){var res=[],cur='',inQ=false;for(var i=0;i<row.length;i++){var c=row[i];if(c==='"'){if(inQ&&row[i+1]==='"'){cur+='"';i++;}else{inQ=!inQ;}}else if(c===','&&!inQ){res.push(cur);cur='';}else{cur+=c;}}res.push(cur);return res;}
-window.clearAll=function(){var p=load();if(!p.length){toast('データがありません');return;}if(!confirm('登録中の '+p.length+' 件をすべて削除しますか？
-削除前にエクスポートを推奨します。'))return;save([]);updateSS();updateDC();showDB('ok','すべて削除しました');};
+window.clearAll=function(){var p=load();if(!p.length){toast('\u30c7\u30fc\u30bf\u304c\u3042\u308a\u307e\u305b\u3093');return;}if(!confirm('\u767b\u9332\u4e2d\u306e '+p.length+' \u4ef6\u3092\u3059\u3079\u3066\u524a\u9664\u3057\u307e\u3059\u304b\uff1f
+\u524a\u9664\u524d\u306b\u30a8\u30af\u30b9\u30dd\u30fc\u30c8\u3092\u63a8\u5968\u3057\u307e\u3059\u3002'))return;save([]);updateSS();updateDC();showDB('ok','\u3059\u3079\u3066\u524a\u9664\u3057\u307e\u3057\u305f');};
 function showDB(type,msg){var el=document.getElementById('dbanner');el.textContent=msg;el.className='dbanner '+type;el.style.display='block';setTimeout(function(){el.style.display='none';},5000);}
 
-/* ── ユーティリティ ── */
+/* \u2500\u2500 \u30e6\u30fc\u30c6\u30a3\u30ea\u30c6\u30a3 \u2500\u2500 */
 function gv(id){var el=document.getElementById(id);return el?el.value.trim():'';}
 function setv(id,val){var el=document.getElementById(id);if(el)el.value=val||'';}
 function fmt(p){return Number(p).toLocaleString('ja-JP');}
 function ds(){return new Date().toISOString().slice(0,10);}
 function chips(gid){return Array.prototype.map.call(document.querySelectorAll('#'+gid+' .chip.on'),function(c){return c.textContent.replace(/^\S{1,2}\s/,'');});}
-function setTxt(tid,cid,txt){document.getElementById(tid).textContent=txt;if(document.getElementById(cid))document.getElementById(cid).textContent=txt.length+'文字';}
+function setTxt(tid,cid,txt){document.getElementById(tid).textContent=txt;if(document.getElementById(cid))document.getElementById(cid).textContent=txt.length+'\u6587\u5b57';}
 function showBlock(id){var el=document.getElementById(id);el.style.display='block';el.scrollIntoView({behavior:'smooth'});}
 window.doCopy=function(id,btn){
   var text=document.getElementById(id).textContent;
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){btn.textContent='✅ コピーしました';btn.classList.add('done');setTimeout(function(){btn.textContent='コピー';btn.classList.remove('done');},2000);}).catch(function(){fallbackCopy(text,btn);});
+    navigator.clipboard.writeText(text).then(function(){btn.textContent='\u2705 \u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f';btn.classList.add('done');setTimeout(function(){btn.textContent='\u30b3\u30d4\u30fc';btn.classList.remove('done');},2000);}).catch(function(){fallbackCopy(text,btn);});
   }else{fallbackCopy(text,btn);}
 };
-function fallbackCopy(text,btn){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');btn.textContent='✅ コピーしました';btn.classList.add('done');setTimeout(function(){btn.textContent='コピー';btn.classList.remove('done');},2000);}catch(e){toast('コピーに失敗しました');}document.body.removeChild(ta);}
+function fallbackCopy(text,btn){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');btn.textContent='\u2705 \u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f';btn.classList.add('done');setTimeout(function(){btn.textContent='\u30b3\u30d4\u30fc';btn.classList.remove('done');},2000);}catch(e){toast('\u30b3\u30d4\u30fc\u306b\u5931\u6557\u3057\u307e\u3057\u305f');}document.body.removeChild(ta);}
 function dlBlob(content,type,filename){var blob=new Blob([content],{type:type});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();}
 function escH(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function escA(str){return String(str||'').replace(/"/g,'&quot;');}
 var _tt;
 function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');clearTimeout(_tt);_tt=setTimeout(function(){el.classList.remove('on');},2400);}
 
-/* ── 初期化 ── */
+/* \u2500\u2500 \u521d\u671f\u5316 \u2500\u2500 */
 updateSS();
 renderList();
 })();
