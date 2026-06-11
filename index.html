@@ -423,9 +423,9 @@ window.parseRoom=function(){
 ').map(function(l){return l.trim();}).filter(Boolean);
   var name='',price='',url='';
   lines.forEach(function(line){
-    if(/^https?:\/\//.test(line)){if(!url)url=line;return;}
-    var m=line.match(/[¥￥]?\s*([\d,]+)\s*円?/);
-    if(m&&line.length<20){if(!price)price=m[1].replace(/,/g,'');return;}
+    if(line.indexOf('http')===0){if(!url)url=line;return;}
+    var digits=line.replace(/[^0-9]/g,'');
+    if(digits.length>=3&&digits.length<=7&&line.length<20){if(!price)price=digits;return;}
     if(!name&&line.length>2)name=line;
   });
   if(name)document.getElementById('rname').value=name;
@@ -434,10 +434,10 @@ window.parseRoom=function(){
   if(name||price){
     document.getElementById('rprev').style.display='block';
     document.getElementById('rprev-name').textContent=name||'（取得できませんでした）';
-    document.getElementById('rprev-price').textContent=price?'¥'+Number(price).toLocaleString('ja-JP'):'';
+    document.getElementById('rprev-price').textContent=price?'\u00a5'+Number(price).toLocaleString('ja-JP'):'';
     toast('自動入力しました！内容を確認してください');
   }else{toast('読み取れませんでした。手入力してください');}
-};
+}
 
 /* ── 登録ステップ ── */
 var selCat=null,editId=null;
@@ -566,7 +566,7 @@ function renderList(){
     var rpb=p.nextPost?(p.nextPost<=today?'<span class="rpbadge due">📅 投稿時期!</span>':'<span class="rpbadge ok">📅 '+p.nextPost+'</span>'):'';
     return '<div class="pitem">'
       +'<div class="pname">'+escH(p.name)+rpb+'</div>'
-      +'<div class="pmeta">'+badge+'¥'+Number(p.price).toLocaleString('ja-JP')+(p.feature?' | '+escH(p.feature):'')+'</div>'
+      +'<div class="pmeta">'+badge+'\u00a5'+Number(p.price).toLocaleString('ja-JP')+(p.feature?' | '+escH(p.feature):'')+'</div>'
       +(p.point?'<div class="ppoint">'+escH(p.point)+'</div>':'')
       +'<div class="pactions">'
       +'<button class="bsm green" onclick="useProd(''+p.id+'')">✍️ 投稿文</button>'
@@ -615,7 +615,7 @@ window.genItem=function(){
 
 '+url:'';
   // 楽天ROOM
-  var r='【'+name+'】¥'+fmt(price)+'
+  var r='【'+name+'】\u00a5'+fmt(price)+'
 
 '+(scenes.join('・')||'日常')+'で実際に使ってみました。
 
@@ -639,7 +639,7 @@ window.genItem=function(){
 とくに「'+fav+'」のが地味にうれしい。':'')+(target?'
 '+target+'にはマジでおすすめ。':'')+'
 
-¥'+fmt(price)+urlLine+'
+\u00a5'+fmt(price)+urlLine+'
 
 '+htags;
   else if(n===1)t='正直、'+before+'って思ってた。
@@ -649,7 +649,7 @@ window.genItem=function(){
 
 「'+fav+'」これが最高すぎた。':'')+'
 
-¥'+fmt(price)+urlLine+'
+\u00a5'+fmt(price)+urlLine+'
 
 '+htags;
   else t='【買ってよかった】
@@ -660,7 +660,7 @@ window.genItem=function(){
 
 特に'+fav+'のが◎':'')+'
 
-¥'+fmt(price)+urlLine+'
+\u00a5'+fmt(price)+urlLine+'
 
 '+htags;
   // X
@@ -669,7 +669,7 @@ window.genItem=function(){
 
 '+xs+'
 
-¥'+fmt(price)+(url?' '+url:'')+'
+\u00a5'+fmt(price)+(url?' '+url:'')+'
 '+htags.split(' ').slice(0,3).join(' ');
   // Instagram
   var ig='✨ '+name+'
@@ -682,7 +682,7 @@ window.genItem=function(){
 
 フォロワーさんにも絶対おすすめしたくて紹介✨'
     +'
-¥'+fmt(price)+(url?'
+\u00a5'+fmt(price)+(url?'
 
 リンクはストーリーかプロフのリンクから👆':'')
     +'
